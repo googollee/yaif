@@ -30,7 +30,6 @@ gem 'will_paginate'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :development do
-  gem 'rspec'
   gem 'rspec-rails'
   gem 'faker'
 end
@@ -38,8 +37,8 @@ end
 group :test do
   # Pretty printed test output
   gem 'turn', :require => false
+  gem 'factory_girl_rails'
   gem 'rspec'
-  gem 'rspec-rails'
   gem 'guard-rspec'
   gem 'spork', '> 0.9.0.rc'
   gem 'guard-spork'
