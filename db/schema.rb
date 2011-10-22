@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111005131533) do
+ActiveRecord::Schema.define(:version => 20111005160438) do
+
+  create_table "services", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "auth_uri"
+    t.string   "auth_type"
+    t.binary   "auth_data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "name"
