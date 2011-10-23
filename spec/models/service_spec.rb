@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Service do
   describe "create" do
-    before(:each) do
+    before :each do
       @attr = { :name => "WeatherCN",
                 :description => "Get the weather report.",
                 :auth_uri => "http://www.weather.com.cn",
@@ -38,6 +38,23 @@ describe Service do
                             :secret => "any secret" }
       service = Service.new(@attr)
       service.valid?.should be_true
+    end
+  end
+
+  describe "with instance" do
+    before :each do
+      @attr = { :name => "WeatherCN",
+                :description => "Get the weather report.",
+                :auth_uri => "http://www.weather.com.cn",
+                :auth_type => "none_auth",
+                :auth_data => {}}
+      @service = Service.new(@attr)
+      @trigger = Factory(:trigger, :service => @service)
+    end
+
+    it "should have right triggers" do
+      trigger = Factory(:trigger, :name => "another tirgger", :service => @service)
+      @service.triggers.should == [@trigger, trigger]
     end
   end
 end
