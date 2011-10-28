@@ -3,9 +3,10 @@ class CreateServices < ActiveRecord::Migration
     create_table :services do |t|
       t.string :name
       t.text :description
-      t.string :auth_uri
+      t.string :icon
       t.string :auth_type
       t.text :auth_data
+      t.text :helper
 
       t.timestamps
     end

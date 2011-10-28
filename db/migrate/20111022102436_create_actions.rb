@@ -3,8 +3,11 @@ class CreateActions < ActiveRecord::Migration
     create_table :actions do |t|
       t.string :name
       t.text :description
-      t.string :uri
-      t.text :do
+      t.string :http_type
+      t.string :http_method
+      t.string :params
+      t.string :source
+      t.text :body
       t.references :service
 
       t.timestamps

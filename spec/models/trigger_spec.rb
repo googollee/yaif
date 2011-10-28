@@ -1,16 +1,19 @@
 require 'spec_helper'
 
 describe Trigger do
-  describe "create" do
-    before :each do
-      @service = Factory(:service)
-      @attr = { :name => "trigger",
-                :description => "a test trigger",
-                :uri => "http://test",
-                :service => @service,
-                :do => "puts 'a'" }
-    end
+  before :each do
+    @service = Factory(:service)
+    @attr = { :name => "test trigger",
+              :description => "a test trigger",
+              :http_type => "direct",
+              :http_method => "get",
+              :params => nil,
+              :source => "http://test/trigger",
+              :content_to_atom => "content",
+              :service => @service }
+  end
 
+  describe "create" do
     it "should valid" do
       trigger = Trigger.new(@attr)
       trigger.valid?.should be_true
@@ -30,25 +33,22 @@ describe Trigger do
         @attr[:service] = nil
       end
 
-      it "should fail without do" do
-        @attr[:do] = ""
+      it "should fail without http_type" do
+        @attr[:http_type] = ""
       end
 
-      it "should fail without uri" do
-        @attr[:uri] = ""
+      it "should fail without http_method" do
+        @attr[:http_method] = ""
+      end
+
+      it "should fail without source" do
+        @attr[:source] = ""
       end
     end
   end
 
   describe "with instance" do
     before :each do
-      @service = Factory(:service)
-      @attr = { :name => "trigger",
-                :description => "a test trigger",
-                :uri => "http://test",
-                :service => @service,
-                :do => "'a'",
-      }
       @trigger = Trigger.new(@attr)
     end
 

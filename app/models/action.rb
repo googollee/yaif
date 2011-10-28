@@ -1,9 +1,11 @@
 class Action < ActiveRecord::Base
   validates :name, :presence => true,
                    :length => { :maximum => 200 }
-  validates :uri, :presence => true
+  validates :http_type, :presence => true
+  validates :http_method, :presence => true
+  validates :source, :presence => true
+
   validates :service, :presence => true
-  validates :do, :presence => true
 
   belongs_to :service
 end
