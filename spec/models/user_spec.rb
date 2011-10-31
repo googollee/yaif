@@ -49,4 +49,19 @@ describe User do
       @user.valid?.should be_false
     end
   end
+
+  describe "exist user" do
+    before :each do
+      @user = User.new(@attr)
+    end
+
+    it "should have right tasks" do
+      service = Factory(:service)
+      trigger = Factory(:trigger, :service => service)
+      action = Factory(:action, :service => service)
+      task1 = Factory(:task, :user => @user, :trigger => trigger, :action => action)
+      task2 = Factory(:task, :user => @user, :name => "task2", :trigger => trigger, :action => action)
+      @user.tasks.should == [task1, task2]
+    end
+  end
 end

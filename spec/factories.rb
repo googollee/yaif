@@ -1,3 +1,10 @@
+Factory.define :user do |u|
+  u.name "Tester"
+  u.email "tester@domain.com"
+  u.password "foobar"
+  u.password_confirmation "foobar"
+end
+
 Factory.define :service do |s|
   s.name "TestService"
   s.icon "file://./test.png"
@@ -26,4 +33,13 @@ Factory.define :action do |a|
   a.source "http://test/action"
   a.body '"abc"'
   a.service :service
+end
+
+Factory.define :task do |t|
+  t.name "test task"
+  t.user :user
+  t.trigger :trigger
+  t.trigger_params ""
+  t.action :action
+  t.action_params ""
 end

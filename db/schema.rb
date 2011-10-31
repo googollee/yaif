@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111022102436) do
+ActiveRecord::Schema.define(:version => 20111031022100) do
 
   create_table "actions", :force => true do |t|
     t.string   "name"
@@ -38,6 +38,21 @@ ActiveRecord::Schema.define(:version => 20111022102436) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "tasks", :force => true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.integer  "trigger_id"
+    t.text     "trigger_params"
+    t.integer  "action_id"
+    t.text     "action_params"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tasks", ["action_id"], :name => "index_tasks_on_action_id"
+  add_index "tasks", ["trigger_id"], :name => "index_tasks_on_trigger_id"
+  add_index "tasks", ["user_id"], :name => "index_tasks_on_user_id"
 
   create_table "triggers", :force => true do |t|
     t.string   "name"

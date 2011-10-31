@@ -8,4 +8,6 @@ class Trigger < ActiveRecord::Base
   validates :service, :presence => true
 
   belongs_to :service
+
+  has_many :tasks
 end

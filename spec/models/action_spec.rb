@@ -55,5 +55,13 @@ describe Action do
     it "should have right service" do
       @action.service.should == @service
     end
+
+    it "should have right task" do
+      user = Factory(:user, :email => "asdf@sa.com")
+      trigger = Factory(:trigger, :service => @service)
+      task1 = Factory(:task, :user => user, :trigger => trigger, :action => @action)
+      task2 = Factory(:task, :user => user, :trigger => trigger, :name => "task2", :action => @action)
+      @action.tasks.should == [task1, task2]
+    end
   end
 end

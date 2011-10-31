@@ -11,4 +11,6 @@ class User < ActiveRecord::Base
                     :uniqueness => { :case_sensitive => false }
   validates :password, :presence => true,
                        :length => { :within => 6..40 }
+
+  has_many :tasks
 end
