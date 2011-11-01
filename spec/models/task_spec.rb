@@ -2,10 +2,9 @@ require 'spec_helper'
 
 describe Task do
   before :each do
-    @user = Factory(:user, :email => "ab@sdf.com")
-    @service = Factory(:service)
-    @trigger = Factory(:trigger, :service => @service)
-    @action = Factory(:action, :service => @service)
+    @user = Factory(:user)
+    @trigger = Factory(:trigger)
+    @action = Factory(:action)
     @attr = {
       :name => "test task",
       :user => @user,

@@ -8,4 +8,10 @@ class Service < ActiveRecord::Base
 
   has_many :triggers
   has_many :actions
+
+  def method_missing(m, *args, &block)
+    instance_eval(self.helper) if self.respond_to?(:helper) and self.helper
+    return self.send(m, *args, &block) if self.respond_to?(m)
+    super
+  end
 end

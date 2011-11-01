@@ -6,7 +6,7 @@ class CreateActions < ActiveRecord::Migration
       t.string :http_type
       t.string :http_method
       t.string :params
-      t.string :source
+      t.string :target
       t.text :body
       t.references :service
 

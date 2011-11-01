@@ -56,11 +56,8 @@ describe User do
     end
 
     it "should have right tasks" do
-      service = Factory(:service)
-      trigger = Factory(:trigger, :service => service)
-      action = Factory(:action, :service => service)
-      task1 = Factory(:task, :user => @user, :trigger => trigger, :action => action)
-      task2 = Factory(:task, :user => @user, :name => "task2", :trigger => trigger, :action => action)
+      task1 = Factory(:task, :user => @user)
+      task2 = Factory(:task, :user => @user)
       @user.tasks.should == [task1, task2]
     end
   end

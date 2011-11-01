@@ -8,7 +8,7 @@ describe Action do
               :http_type => "direct",
               :http_method => "post",
               :params => nil,
-              :source => "http://test/action",
+              :target => "http://test/action",
               :body => '"abc"',
               :service => @service }
   end
@@ -42,13 +42,24 @@ describe Action do
       end
 
       it "should fail without source" do
-        @attr[:source] = ""
+        @attr[:target] = ""
       end
     end
   end
 
   describe "with instance" do
     before :each do
+      module RequestHelper
+        class << self
+          def direct_request(method, uri, body, header=nil)
+            $method = method
+            $uri = uri
+            $body = body
+            $header = header
+          end
+        end
+      end
+
       @action = Action.new(@attr)
     end
 
@@ -57,11 +68,31 @@ describe Action do
     end
 
     it "should have right task" do
-      user = Factory(:user, :email => "asdf@sa.com")
-      trigger = Factory(:trigger, :service => @service)
-      task1 = Factory(:task, :user => user, :trigger => trigger, :action => @action)
-      task2 = Factory(:task, :user => user, :trigger => trigger, :name => "task2", :action => @action)
+      task1 = Factory(:task, :action => @action)
+      task2 = Factory(:task, :action => @action)
       @action.tasks.should == [task1, task2]
+    end
+
+    it "should send request" do
+      @attr[:body] = "params.to_s"
+      params = { :updated => Time.now, :title => "test title", :link => "http://test/link", :comment => "just a test" }
+      @action = Action.new(@attr)
+      @action.send_request params
+      $method.should == @attr[:http_method].to_sym
+      $uri.should == @attr[:target]
+      $body.should == params.to_s
+    end
+
+    it "should call service when not find method" do
+      service = Factory(:service, :helper => "
+                          def test_helper(a)
+                            a.to_s
+                          end")
+      @attr[:body] = "test_helper(1)"
+      @attr[:service] = service
+      @action = Action.new(@attr)
+      @action.send_request :updated => Time.now
+      $body.should == "1"
     end
   end
 end
