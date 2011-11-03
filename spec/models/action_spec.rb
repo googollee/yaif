@@ -98,7 +98,7 @@ describe Action do
       @attr[:body] = "test_helper(1)"
       @attr[:service] = service
       @action = Action.new(@attr)
-      @action.send_request @user, :updated => Time.now
+      @action.send_request @user, :updated => Time.now, :id => "123"
       $body.should == "1"
     end
   end

@@ -14,8 +14,8 @@ describe Trigger do
               :description => "a test trigger",
               :http_type => "direct",
               :http_method => "get",
-              :in_keys => [:id],
-              :source => 'http://test/trigger/#{id}',
+              :in_keys => [:user_id],
+              :source => 'http://test/trigger/#{user_id}',
               :out_keys => [:title, :link],
               :content_to_hash => '
                 require "time"
@@ -23,7 +23,8 @@ describe Trigger do
                 json.each.inject([]) do |o, i|
                   o << { :title => i["title"],
                          :updated => Time.parse(i["updated"]),
-                         :link => i["link"] }
+                         :link => i["link"],
+                         :id => user_id }
                 end
               ',
               :service => @service }
@@ -106,7 +107,7 @@ describe Trigger do
     end
 
     it "should get right atom content" do
-      ret = @trigger.get_atom @user, :id => 123
+      ret = @trigger.get_atom @user, :user_id => 123
 
       $method.should == @trigger.http_method.to_sym
       $uri.should == "http://test/trigger/123"
@@ -116,6 +117,7 @@ describe Trigger do
         ret[n][:title].should == $entries[n][:title]
         ret[n][:link].should == $entries[n][:link]
         ret[n][:updated].should == Time.parse($entries[n][:updated])
+        ret[n][:id].should == 123
       end
     end
 
@@ -127,7 +129,7 @@ describe Trigger do
       @attr[:content_to_hash] = "test_helper(1)"
       @attr[:service] = service
       @trigger = Trigger.new(@attr)
-      @trigger.get_atom(@user).should == "1"
+      @trigger.get_atom(@user, { :user_id => "123" }).should == "1"
     end
   end
 end

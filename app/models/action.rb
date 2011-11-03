@@ -19,7 +19,8 @@ class Action < ActiveRecord::Base
   end
 
   def method_missing(m, *args, &block)
-    return self.send(m, *args, &block) if self.respond_to?(m)
+    return self.send(m, *args, &block) if self.respond_to? m
+    return @params[m] if @params and @params.include? m
     self.service.send(m, *args, &block)
   end
 
@@ -32,11 +33,11 @@ class Action < ActiveRecord::Base
   end
 
   def uri
-    eval "#{@init_str} \n \"#{self.target}\""
+    MetaHelper.hash_eval @params, "\"#{self.target}\""
   end
 
   def body_
-    eval "#{@init_str} \n #{self.body}"
+    eval self.body
   end
 
   def meta
