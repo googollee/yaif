@@ -9,9 +9,9 @@ describe Task do
       :name => "test task",
       :user => @user,
       :trigger => @trigger,
-      :trigger_params => "",
+      :trigger_params => {},
       :action => @action,
-      :action_params => "" }
+      :action_params => {} }
   end
 
   describe "create" do
@@ -46,7 +46,7 @@ describe Task do
 
   describe "check attributes" do
     before :each do
-      @task = Task.new(@attr)
+      @task = Task.create!(@attr)
     end
 
     it "should have right user" do
@@ -59,6 +59,52 @@ describe Task do
 
     it "should have right action" do
       @task.action.should == @action
+    end
+  end
+
+  describe "work flow" do
+    before :each do
+      module RequestHelper
+        class << self
+          def direct_request(method, uri, body, meta={})
+            $method = method
+            $uri = uri
+            $body = body
+            $meta = meta
+
+            {}.to_json
+          end
+        end
+      end
+
+      @task = Task.create!(@attr)
+    end
+
+    it "should do action" do
+      @task.run
+
+      $method.should == :post
+      $uri.should == "http://test/action"
+      $body.should == "abc"
+      $meta.should == nil
+    end
+
+    it "should add run count" do
+      @task.run
+      @task.reload
+      @task.run_count.should == 1
+      @task.run
+      @task.reload
+      @task.run_count.should == 2
+    end
+
+    it "should update last run time" do
+      @task.run
+      @task.reload
+      last_run = @task.last_run
+      @task.run
+      @task.reload
+      @task.last_run.should > last_run
     end
   end
 end

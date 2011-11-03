@@ -13,4 +13,5 @@ class User < ActiveRecord::Base
                        :length => { :within => 6..40 }
 
   has_many :tasks
+  has_many :service_meta_with_user
 end

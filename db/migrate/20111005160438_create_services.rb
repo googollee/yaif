@@ -1,7 +1,7 @@
 class CreateServices < ActiveRecord::Migration
   def change
     create_table :services do |t|
-      t.string :name
+      t.string :name, :unique => true
       t.text :description
       t.string :icon
       t.string :auth_type

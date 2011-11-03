@@ -5,7 +5,7 @@ describe Service do
     @attr = { :name => "TestService",
               :icon => "file://./test.png",
               :description => "a test service",
-              :auth_type => "none_auth",
+              :auth_type => "test",
               :auth_data => {},
               :helper => "
                 def test_helper(a)
@@ -63,6 +63,33 @@ describe Service do
       lambda do
         @service.non_exist_helper
       end.should raise_error
+    end
+  end
+
+  describe "workflow" do
+    before :each do
+      @service = Service.new(@attr)
+      @user = Factory(:user)
+
+      $auth_url = 'http://test/auth/url'
+      module AuthHelper
+        extend self
+        def test_auth(service)
+          $auth_url
+        end
+      end
+    end
+
+    it "should get auth url" do
+      @service.auth.should == $auth_url
+    end
+
+    it "should save meta data" do
+      data = { :user => "tester", :password => "foobar" }
+      @service.save_meta @user, data
+      meta = ServiceMetaWithUser.where :service_id => @service, :user_id => @user
+      meta.length.should == 1
+      meta[0].data.should == data
     end
   end
 end

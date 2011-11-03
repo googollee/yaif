@@ -1,11 +1,11 @@
 class CreateActions < ActiveRecord::Migration
   def change
     create_table :actions do |t|
-      t.string :name
+      t.string :name, :unique => true
       t.text :description
       t.string :http_type
       t.string :http_method
-      t.string :params
+      t.text :in_keys
       t.string :target
       t.text :body
       t.references :service

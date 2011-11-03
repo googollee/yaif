@@ -7,9 +7,9 @@ describe Action do
               :description => "a test action",
               :http_type => "direct",
               :http_method => "post",
-              :params => nil,
-              :target => "http://test/action",
-              :body => '"abc"',
+              :in_keys => [:id, :content],
+              :target => 'http://test/action/#{id}',
+              :body => '"#{content}"',
               :service => @service }
   end
 
@@ -49,17 +49,6 @@ describe Action do
 
   describe "with instance" do
     before :each do
-      module RequestHelper
-        class << self
-          def direct_request(method, uri, body, header=nil)
-            $method = method
-            $uri = uri
-            $body = body
-            $header = header
-          end
-        end
-      end
-
       @action = Action.new(@attr)
     end
 
@@ -72,15 +61,33 @@ describe Action do
       task2 = Factory(:task, :action => @action)
       @action.tasks.should == [task1, task2]
     end
+  end
+
+  describe "workflow" do
+    before :each do
+      module RequestHelper
+        class << self
+          def direct_request(method, uri, body, meta={})
+            $method = method
+            $uri = uri
+            $body = body
+            $meta = meta
+          end
+        end
+      end
+
+      @action = Action.new(@attr)
+      @meta = Factory(:service_meta_with_user, :service => @action.service, :data => {:pass => "xyz"})
+      @user = @meta.user
+    end
 
     it "should send request" do
-      @attr[:body] = "params.to_s"
-      params = { :updated => Time.now, :title => "test title", :link => "http://test/link", :comment => "just a test" }
-      @action = Action.new(@attr)
-      @action.send_request params
+      params = { :updated => Time.now, :id => "123", :content => "abc" }
+      @action.send_request @user, params
       $method.should == @attr[:http_method].to_sym
-      $uri.should == @attr[:target]
-      $body.should == params.to_s
+      $uri.should == "http://test/action/123"
+      $body.should == "abc"
+      $meta.should == {:pass => "xyz"}
     end
 
     it "should call service when not find method" do
@@ -91,7 +98,7 @@ describe Action do
       @attr[:body] = "test_helper(1)"
       @attr[:service] = service
       @action = Action.new(@attr)
-      @action.send_request :updated => Time.now
+      @action.send_request @user, :updated => Time.now
       $body.should == "1"
     end
   end

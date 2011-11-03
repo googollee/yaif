@@ -11,14 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111031022100) do
+ActiveRecord::Schema.define(:version => 20111102054413) do
 
   create_table "actions", :force => true do |t|
     t.string   "name"
     t.text     "description"
     t.string   "http_type"
     t.string   "http_method"
-    t.string   "params"
+    t.text     "in_keys"
     t.string   "target"
     t.text     "body"
     t.integer  "service_id"
@@ -27,6 +27,18 @@ ActiveRecord::Schema.define(:version => 20111031022100) do
   end
 
   add_index "actions", ["service_id"], :name => "index_actions_on_service_id"
+
+  create_table "service_meta_with_user", :force => true do |t|
+    t.integer  "service_id"
+    t.integer  "user_id"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "service_meta_with_user", ["service_id", "user_id"], :name => "index_service_meta_with_user_on_service_id_and_user_id", :unique => true
+  add_index "service_meta_with_user", ["service_id"], :name => "index_service_meta_with_user_on_service_id"
+  add_index "service_meta_with_user", ["user_id"], :name => "index_service_meta_with_user_on_user_id"
 
   create_table "services", :force => true do |t|
     t.string   "name"
@@ -46,6 +58,8 @@ ActiveRecord::Schema.define(:version => 20111031022100) do
     t.text     "trigger_params"
     t.integer  "action_id"
     t.text     "action_params"
+    t.integer  "run_count",      :default => 0
+    t.datetime "last_run"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -59,9 +73,9 @@ ActiveRecord::Schema.define(:version => 20111031022100) do
     t.text     "description"
     t.string   "http_type"
     t.string   "http_method"
-    t.string   "params"
+    t.text     "in_keys"
     t.string   "source"
-    t.string   "out_keys"
+    t.text     "out_keys"
     t.text     "content_to_hash"
     t.integer  "service_id"
     t.datetime "created_at"

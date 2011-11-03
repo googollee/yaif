@@ -8,6 +8,15 @@ class Service < ActiveRecord::Base
 
   has_many :triggers
   has_many :actions
+  has_many :service_meta_with_user
+
+  def auth
+    AuthHelper.send("#{self.auth_type}_auth", self)
+  end
+
+  def save_meta(user, data)
+    meta = ServiceMetaWithUser.create!(:service => self, :user => user, :data => data)
+  end
 
   def method_missing(m, *args, &block)
     instance_eval(self.helper) if self.respond_to?(:helper) and self.helper

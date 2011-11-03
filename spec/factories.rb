@@ -36,7 +36,7 @@ FactoryGirl.define do
     description "a test service"
     auth_type "none_auth"
     auth_data {}
-    helper "abc"
+    helper ""
   end
 
   factory :trigger do
@@ -44,9 +44,9 @@ FactoryGirl.define do
     description "a test trigger"
     http_type "direct"
     http_method "get"
-    params nil
+    in_keys []
     source "http://test/trigger"
-    out_keys "content"
+    out_keys [:content]
     content_to_hash "content"
     association :service
   end
@@ -56,7 +56,7 @@ FactoryGirl.define do
     description "a test action"
     http_type "direct"
     http_method "post"
-    params nil
+    in_keys  []
     target "http://test/action"
     body '"abc"'
     association :service
@@ -66,8 +66,14 @@ FactoryGirl.define do
     name { Factory.next :task_name }
     association :user
     association :trigger
-    trigger_params ""
+    trigger_params {}
     association :action
-    action_params ""
+    action_params {}
+  end
+
+  factory :service_meta_with_user do
+    association :service
+    association :user
+    data {}
   end
 end

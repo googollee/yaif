@@ -14,9 +14,9 @@ describe Trigger do
               :description => "a test trigger",
               :http_type => "direct",
               :http_method => "get",
-              :params => nil,
-              :source => "http://test/trigger",
-              :out_keys => "title, link",
+              :in_keys => [:id],
+              :source => 'http://test/trigger/#{id}',
+              :out_keys => [:title, :link],
               :content_to_hash => '
                 require "time"
                 json = ActiveSupport::JSON.decode(content)
@@ -81,17 +81,37 @@ describe Trigger do
     it "should respond of content_to_atom" do
       @trigger.respond_to?(:get_atom).should be_true
     end
+  end
 
-    it "should get right atom content" do
+  describe "workflow" do
+    before :each do
       module RequestHelper
         class << self
-          def direct_request(method, uri, body, header=nil)
+          def direct_request(method, uri, body, meta={})
+            $method = method
+            $uri = uri
+            $body = body
+            $meta = meta
+
             $entries.to_json
           end
         end
       end
 
-      ret = @trigger.get_atom
+      @trigger = Trigger.new(@attr)
+      @meta = Factory(:service_meta_with_user,
+                      :service => @trigger.service,
+                      :data => { :pass => "xyz" })
+      @user = @meta.user
+    end
+
+    it "should get right atom content" do
+      ret = @trigger.get_atom @user, :id => 123
+
+      $method.should == @trigger.http_method.to_sym
+      $uri.should == "http://test/trigger/123"
+      $body.should == ""
+      $meta.should == { :pass => "xyz" }
       5.times do |n|
         ret[n][:title].should == $entries[n][:title]
         ret[n][:link].should == $entries[n][:link]
@@ -107,7 +127,7 @@ describe Trigger do
       @attr[:content_to_hash] = "test_helper(1)"
       @attr[:service] = service
       @trigger = Trigger.new(@attr)
-      @trigger.get_atom.should == "1"
+      @trigger.get_atom(@user).should == "1"
     end
   end
 end
