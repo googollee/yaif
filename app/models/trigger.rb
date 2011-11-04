@@ -17,29 +17,23 @@ class Trigger < ActiveRecord::Base
 
   def get_atom(user, *args)
     init_env user, args
-    @content = RequestHelper.send "#{self.http_type}_request".to_sym, self.http_method.to_sym, uri, "", meta
-    eval self.content_to_hash
-  end
-
-  def method_missing(m, *arg, &block)
-    return self.send(m, *arg, &block) if self.respond_to? m
-    return @params[m] if @params and @params.include? m
-    return @content if m == :content
-    self.service.send(m, *arg, &block)
+    @params[:content] = RequestHelper.send "#{http_type}_request".to_sym, http_method.to_sym, uri, "", meta
+    @runtime.eval content_to_hash
   end
 
   private
 
   def init_env(user, args)
     @params = args[-1] || {}
+    @runtime = service.inner_runtime @params
     @user = user
   end
 
   def meta
-    self.service.meta @user
+    service.meta @user
   end
 
   def uri
-    MetaHelper.hash_eval @params, "\"#{self.source}\""
+    @runtime.eval "\"#{source}\""
   end
 end

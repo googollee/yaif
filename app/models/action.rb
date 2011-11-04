@@ -15,32 +15,26 @@ class Action < ActiveRecord::Base
 
   def send_request(user, params)
     init_env user, params
-    RequestHelper.send "#{self.http_type}_request".to_sym, self.http_method.to_sym, uri, body_, meta
-  end
-
-  def method_missing(m, *args, &block)
-    return self.send(m, *args, &block) if self.respond_to? m
-    return @params[m] if @params and @params.include? m
-    self.service.send(m, *args, &block)
+    RequestHelper.send "#{http_type}_request".to_sym, http_method.to_sym, uri, body_, meta
   end
 
   private
 
   def init_env(user, params)
     @params = params || {}
-    @init_str = @params.each.inject("") { |o, kv| o += "#{kv[0]} = \"#{kv[1]}\"\n" }
+    @runtime = service.inner_runtime @params
     @user = user
   end
 
   def uri
-    MetaHelper.hash_eval @params, "\"#{self.target}\""
+    @runtime.eval "\"#{target}\""
   end
 
   def body_
-    eval self.body
+    @runtime.eval body
   end
 
   def meta
-    self.service.meta @user
+    service.meta @user
   end
 end

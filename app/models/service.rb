@@ -23,9 +23,27 @@ class Service < ActiveRecord::Base
     meta[0] ? meta[0].data : nil
   end
 
-  def method_missing(m, *args, &block)
-    instance_eval(self.helper) if self.respond_to?(:helper) and self.helper
-    return self.send(m, *args, &block) if self.respond_to?(m)
-    super
+  def inner_runtime(params = nil)
+    inner = InnerRuntime.new params
+    inner.instance_eval self.helper
+    inner
+  end
+
+  private
+
+  class InnerRuntime
+    def initialize(params)
+      @params = params
+    end
+
+    def eval(str)
+      instance_eval str
+    end
+
+    def method_missing(m, *args, &block)
+      return self.send(m, *args, &block) if self.respond_to? m
+      return @params[m] if @params and @params.include? m
+      super
+    end
   end
 end
