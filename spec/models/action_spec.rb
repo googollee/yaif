@@ -87,7 +87,7 @@ describe Action do
       $method.should == @attr[:http_method].to_sym
       $uri.should == "http://test/action/123"
       $body.should == "abc"
-      $meta.should == {:pass => "xyz"}
+      $meta[:pass].should == "xyz"
     end
 
     it "should call service when not find method" do

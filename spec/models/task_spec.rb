@@ -86,7 +86,7 @@ describe Task do
       $method.should == :post
       $uri.should == "http://test/action"
       $body.should == "abc"
-      $meta.should == nil
+      $meta.include?(:auth_data).should be_true
     end
 
     it "should add run count" do

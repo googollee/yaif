@@ -6,7 +6,7 @@ describe Service do
               :icon => "file://./test.png",
               :description => "a test service",
               :auth_type => "test",
-              :auth_data => {},
+              :auth_data => { :auth => "auth" },
               :helper => "
                 def test_helper(a)
                   a.to_s
@@ -93,16 +93,19 @@ describe Service do
 
     it "should save meta data" do
       data = { :user => "tester", :password => "foobar" }
-      @service.save_meta @user, data
-      meta = ServiceMetaWithUser.where :service_id => @service, :user_id => @user
-      meta.length.should == 1
-      meta[0].data.should == data
+      lambda do
+        @service.save_meta @user, data
+      end.should change(ServiceMetaWithUser, :count).by(1)
     end
 
     it "should get meta data" do
       data = { :user => "tester", :password => "foobar" }
       @service.save_meta @user, data
-      @service.meta(@user).should == data
+      meta = @service.meta(@user)
+      data.each do |k, v|
+        meta[k].should == v
+      end
+      meta[:auth_data].should == @service.auth_data
     end
   end
 end

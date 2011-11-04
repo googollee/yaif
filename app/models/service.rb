@@ -19,8 +19,10 @@ class Service < ActiveRecord::Base
   end
 
   def meta(user)
-    meta = ServiceMetaWithUser.where :service_id => self, :user_id => user
-    meta[0] ? meta[0].data : nil
+    metas = ServiceMetaWithUser.where :service_id => self, :user_id => user
+    meta = metas[0] ? metas[0].data : {}
+    meta[:auth_data] = auth_data || {}
+    meta
   end
 
   def inner_runtime(params = nil)
