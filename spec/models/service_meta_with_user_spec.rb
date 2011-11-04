@@ -30,17 +30,4 @@ describe ServiceMetaWithUser do
       end
     end
   end
-
-  describe "get meta direct" do
-    before :each do
-      @attr = { :user => Factory(:user),
-                :service => Factory(:service),
-                :data => { :a => 1, :b => 2 } }
-      @data = ServiceMetaWithUser.create! @attr
-    end
-
-    it "should get meta" do
-      ServiceMetaWithUser.get(@attr[:service], @attr[:user]).should == @attr[:data]
-    end
-  end
 end

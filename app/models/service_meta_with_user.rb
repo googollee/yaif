@@ -8,9 +8,4 @@ class ServiceMetaWithUser < ActiveRecord::Base
 
   belongs_to :service
   belongs_to :user
-
-  def self.get(service, user)
-    meta = self.where :service_id => service, :user_id => user
-    meta[0] ? meta[0].data : nil
-  end
 end

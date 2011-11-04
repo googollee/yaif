@@ -18,6 +18,11 @@ class Service < ActiveRecord::Base
     meta = ServiceMetaWithUser.create!(:service => self, :user => user, :data => data)
   end
 
+  def meta(user)
+    meta = ServiceMetaWithUser.where :service_id => self, :user_id => user
+    meta[0] ? meta[0].data : nil
+  end
+
   def method_missing(m, *args, &block)
     instance_eval(self.helper) if self.respond_to?(:helper) and self.helper
     return self.send(m, *args, &block) if self.respond_to?(m)

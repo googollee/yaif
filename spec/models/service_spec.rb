@@ -91,5 +91,11 @@ describe Service do
       meta.length.should == 1
       meta[0].data.should == data
     end
+
+    it "should get meta data" do
+      data = { :user => "tester", :password => "foobar" }
+      @service.save_meta @user, data
+      @service.meta(@user).should == data
+    end
   end
 end

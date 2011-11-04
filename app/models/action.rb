@@ -41,6 +41,6 @@ class Action < ActiveRecord::Base
   end
 
   def meta
-    ServiceMetaWithUser.get self.service, @user
+    self.service.meta @user
   end
 end
