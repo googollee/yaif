@@ -87,6 +87,10 @@ describe Service do
       @service.auth({}).should == $auth_url
     end
 
+    it "should get nil if no meta data" do
+      @service.meta(@user).should == nil
+    end
+
     it "should save meta data" do
       lambda do
         @service.auth_meta @user, {}
