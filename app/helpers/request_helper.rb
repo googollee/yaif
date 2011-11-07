@@ -9,7 +9,7 @@ module RequestHelper
   def direct_request(method, uri, body, meta={})
     uri = get_uri uri
     req = get_method(method).new uri.path
-    req.set_internal_body body
+    req.set_body_internal body
     res = Net::HTTP.start uri.host, uri.port, :use_ssl => (uri.scheme == "https") do |http|
       http.request req
     end
@@ -42,13 +42,13 @@ module RequestHelper
 
   def get_method(method)
     case method
-    when "get"
+    when /^get$/i
       Net::HTTP::Get
-    when "post"
+    when /^post$/i
       Net::HTTP::Post
-    when "put"
+    when /^put$/i
       Net::HTTP::Put
-    when "delete"
+    when /^delete$/i
       Net::HTTP::Delete
     else
       raise "Unknown method: #{method}"

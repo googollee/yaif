@@ -1,6 +1,8 @@
 require 'oauth'
 
 module AuthHelper
+  extend self
+
   # noauth
   def noauth_auth(service, session)
     nil
@@ -37,7 +39,7 @@ module AuthHelper
     )
 
     session[:request_token] = consumer.get_request_token
-    session[:request_token].authorize_url oauth_back_url
+    session[:request_token].authorize_url :oauth_callback => oauth_callback_url
   end
 
   def oauth1_get_meta(service, session)
@@ -79,11 +81,29 @@ module AuthHelper
       }
     )
 
-    session[:request_token] = consumer.get_request_token oauth_back_url
+    session[:request_token] = consumer.get_request_token :oauth_callback => oauth_callback_url
     session[:request_token].authorize_url
   end
 
   def oauth1a_get_meta(service, session)
     oauth1_get_meta service, session # same as auth 1.0
+  end
+
+  private
+
+  begin
+    root_url
+  rescue
+    def root_url
+      "http://root/url"
+    end
+  end
+
+  begin
+    oauth_callback_url
+  rescue
+    def oauth_callback_url
+      "http://root/oauth_callback"
+    end
   end
 end

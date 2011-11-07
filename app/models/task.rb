@@ -12,7 +12,7 @@ class Task < ActiveRecord::Base
   belongs_to :action
 
   def run
-    content = self.trigger.get_atom self.user self.trigger_params
+    content = self.trigger.get self.user self.trigger_params
     self.action.send_request self.user, ActiveSupport::JSON.decode(content)
     self.run_count += 1
     self.last_run = Time.now

@@ -15,9 +15,13 @@ class Trigger < ActiveRecord::Base
 
   has_many :tasks
 
-  def get_atom(user, *args)
+  def get_body(user, *args)
     init_env user, args
     @params[:content] = RequestHelper.send "#{http_type}_request".to_sym, http_method.to_sym, uri, "", meta
+  end
+
+  def get(user, *args)
+    get_body user, *args
     @runtime.eval content_to_hash
   end
 

@@ -78,10 +78,6 @@ describe Trigger do
       task2 = Factory(:task, :trigger => @trigger)
       @trigger.tasks.should == [task1, task2]
     end
-
-    it "should respond of content_to_atom" do
-      @trigger.respond_to?(:get_atom).should be_true
-    end
   end
 
   describe "workflow" do
@@ -106,8 +102,13 @@ describe Trigger do
       @user = @meta.user
     end
 
+    it "should get body" do
+      ret = @trigger.get_body @user, :user_id => 123
+      ret.should == $entries.to_json
+    end
+
     it "should get right atom content" do
-      ret = @trigger.get_atom @user, :user_id => 123
+      ret = @trigger.get @user, :user_id => 123
 
       $method.should == @trigger.http_method.to_sym
       $uri.should == "http://test/trigger/123"
@@ -129,7 +130,7 @@ describe Trigger do
       @attr[:content_to_hash] = "test_helper(1)"
       @attr[:service] = service
       @trigger = Trigger.new(@attr)
-      @trigger.get_atom(@user, { :user_id => "123" }).should == "1"
+      @trigger.get(@user, { :user_id => "123" }).should == "1"
     end
   end
 end
