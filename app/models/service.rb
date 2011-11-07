@@ -10,12 +10,13 @@ class Service < ActiveRecord::Base
   has_many :actions
   has_many :service_meta_with_user
 
-  def auth
-    AuthHelper.send("#{self.auth_type}_auth", self)
+  def auth(session)
+    AuthHelper.send("#{auth_type}_auth", self, session)
   end
 
-  def save_meta(user, data)
-    meta = ServiceMetaWithUser.create!(:service => self, :user => user, :data => data)
+  def auth_meta(user, session)
+    meta = AuthHelper.send("#{auth_type}_get_meta", self, session)
+    ServiceMetaWithUser.create!(:service => self, :user => user, :data => meta)
   end
 
   def meta(user)

@@ -81,31 +81,31 @@ describe Service do
       $auth_url = 'http://test/auth/url'
       module AuthHelper
         extend self
-        def test_auth(service)
+        def test_auth(service, session)
           $auth_url
+        end
+
+        def test_get_meta(service, session)
+          { :pass => "foobar", :auth => service.auth_data[:auth] }
         end
       end
     end
 
     it "should get auth url" do
-      @service.auth.should == $auth_url
+      @service.auth({}).should == $auth_url
     end
 
     it "should save meta data" do
-      data = { :user => "tester", :password => "foobar" }
       lambda do
-        @service.save_meta @user, data
+        @service.auth_meta @user, {}
       end.should change(ServiceMetaWithUser, :count).by(1)
     end
 
     it "should get meta data" do
-      data = { :user => "tester", :password => "foobar" }
-      @service.save_meta @user, data
-      meta = @service.meta(@user)
-      data.each do |k, v|
-        meta[k].should == v
-      end
+      @service.auth_meta @user, {}
+      meta = @service.meta @user
       meta[:auth_data].should == @service.auth_data
+      meta[:pass].should == "foobar"
     end
   end
 end

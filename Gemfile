@@ -19,6 +19,7 @@ end
 gem 'jquery-rails'
 gem 'gravatar_image_tag'
 gem 'will_paginate'
+gem 'oauth'
 
 # Use unicorn as the web server
 # gem 'unicorn'

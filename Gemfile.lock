@@ -70,6 +70,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.16)
     multi_json (1.0.3)
+    oauth (0.4.5)
     polyglot (0.3.2)
     rack (1.3.3)
     rack-cache (1.0.3)
@@ -147,6 +148,7 @@ DEPENDENCIES
   guard-rspec
   guard-spork
   jquery-rails
+  oauth
   rails (= 3.1.0)
   rspec
   rspec-rails
