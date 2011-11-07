@@ -2,9 +2,8 @@ module RuntimeHelper
   extend self
 
   class InnerRuntime
-    def initialize(def_string, params)
+    def initialize(params)
       @params = params
-      instance_eval def_string
     end
 
     def eval(str)
