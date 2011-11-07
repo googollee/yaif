@@ -17,4 +17,24 @@ module RuntimeHelper
       super
     end
   end
+
+  def init_env(obj)
+    begin
+      root_url
+      obj.root_url
+    rescue
+      def obj.root_url
+        "http://root/url"
+      end
+    end
+
+    begin
+      oauth_callback_url
+      obj.oauth_callback_url
+    rescue
+      def obj.oauth_callback_url
+        "http://root/oauth_callback"
+      end
+    end
+  end
 end

@@ -64,6 +64,8 @@ describe Task do
 
   describe "work flow" do
     before :each do
+      @trigger_meta = Factory(:service_meta_with_user, :user => @user, :service => @trigger.service, :data => { :from => "trigger" })
+      @action_meta = Factory(:service_meta_with_user, :user => @user, :service => @action.service, :data => { :from => "action" })
       module RequestHelper
         class << self
           def direct_request(method, uri, body, meta={})
@@ -86,7 +88,7 @@ describe Task do
       $method.should == :post
       $uri.should == "http://test/action"
       $body.should == "abc"
-      $meta.include?(:auth_data).should be_true
+      $meta.should == { :from => "action" }
     end
 
     it "should add run count" do

@@ -15,15 +15,17 @@ class Service < ActiveRecord::Base
   end
 
   def auth_meta(user, session)
-    meta = AuthHelper.send("#{auth_type}_get_meta", self, session)
-    ServiceMetaWithUser.create!(:service => self, :user => user, :data => meta)
+    data = AuthHelper.send("#{auth_type}_get_meta", self, session)
+    metas = ServiceMetaWithUser.where :service_id => self, :user_id => user
+    return ServiceMetaWithUser.create!(:service => self, :user => user, :data => data) if metas.length == 0
+    metas[0].data = data
+    metas[0].save!
   end
 
   def meta(user)
     metas = ServiceMetaWithUser.where :service_id => self, :user_id => user
-    meta = metas[0] ? metas[0].data : {}
-    meta[:auth_data] = auth_data || {}
-    meta
+    return nil if metas.length == 0
+    metas[0].data
   end
 
   def inner_runtime(params = nil)

@@ -96,8 +96,25 @@ describe Service do
     it "should get meta data" do
       @service.auth_meta @user, {}
       meta = @service.meta @user
-      meta[:auth_data].should == @service.auth_data
+      meta[:auth].should == @service.auth_data[:auth]
       meta[:pass].should == "foobar"
+    end
+
+    it "should replace meta data" do
+      @service.auth_meta @user, {}
+      @service.meta(@user)[:pass].should == "foobar"
+
+      module AuthHelper
+        extend self
+        def test_get_meta(service, session)
+          { :pass => "foo" }
+        end
+      end
+
+      lambda do
+        @service.auth_meta @user, {}
+      end.should change(ServiceMetaWithUser, :count).by(0)
+      @service.meta(@user)[:pass].should == "foo"
     end
   end
 end

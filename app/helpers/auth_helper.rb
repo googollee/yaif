@@ -3,6 +3,8 @@ require 'oauth'
 module AuthHelper
   extend self
 
+  RuntimeHelper.init_env(self)
+
   # noauth
   def noauth_auth(service, session)
     nil
@@ -87,23 +89,5 @@ module AuthHelper
 
   def oauth1a_get_meta(service, session)
     oauth1_get_meta service, session # same as auth 1.0
-  end
-
-  private
-
-  begin
-    root_url
-  rescue
-    def root_url
-      "http://root/url"
-    end
-  end
-
-  begin
-    oauth_callback_url
-  rescue
-    def oauth_callback_url
-      "http://root/oauth_callback"
-    end
   end
 end

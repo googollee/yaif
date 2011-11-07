@@ -6,6 +6,8 @@ require 'oauth'
 module RequestHelper
   extend self
 
+  RuntimeHelper.init_env(self)
+
   def direct_request(method, uri, body, meta={})
     uri = get_uri uri
     req = get_method(method).new uri.path
