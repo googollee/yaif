@@ -15,21 +15,22 @@ class Trigger < ActiveRecord::Base
 
   has_many :tasks
 
-  def get_body(user, *args)
-    init_env user, args
-    @params[:content] = RequestHelper.send "#{http_type}_request".to_sym, http_method.to_sym, uri, "", meta
+  def get_body(user, params)
+    init_env user, params
+    content = RequestHelper.send("#{http_type}_request".to_sym, http_method.to_sym, uri, nil, meta)
+    @runtime.add_params :content => content
+    content
   end
 
-  def get(user, *args)
-    get_body user, *args
+  def get(user, params)
+    get_body user, params
     @runtime.eval content_to_hash
   end
 
   private
 
-  def init_env(user, args)
-    @params = args[-1] || {}
-    @runtime = service.inner_runtime @params
+  def init_env(user, params)
+    @runtime = service.inner_runtime params || {}
     @user = user
   end
 

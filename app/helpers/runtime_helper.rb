@@ -5,12 +5,19 @@ module RuntimeHelper
   extend self
 
   class InnerRuntime
-    def initialize(params)
-      @params = params
+    def add_params(params)
+      @params ||= {}
+      @params.merge! params
     end
 
     def eval(str)
       instance_eval str
+    end
+
+    def parse_xml(content, selector)
+      (xml(content) / selector).inject([]) do |o, i|
+        o << (yield i)
+      end
     end
 
     def method_missing(m, *args, &block)

@@ -21,8 +21,7 @@ class Action < ActiveRecord::Base
   private
 
   def init_env(user, params)
-    @params = params || {}
-    @runtime = service.inner_runtime @params
+    @runtime = service.inner_runtime params || {}
     @user = user
   end
 

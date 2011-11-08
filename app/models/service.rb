@@ -28,7 +28,8 @@ class Service < ActiveRecord::Base
   end
 
   def inner_runtime(params = nil)
-    inner = RuntimeHelper::InnerRuntime.new params
+    inner = RuntimeHelper::InnerRuntime.new
+    inner.add_params params
     inner.instance_eval self.helper
     inner
   end

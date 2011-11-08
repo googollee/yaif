@@ -112,7 +112,7 @@ describe Trigger do
 
       $method.should == @trigger.http_method.to_sym
       $uri.should == "http://test/trigger/123"
-      $body.should == ""
+      $body.should == nil
       $meta[:pass].should == "xyz"
       5.times do |n|
         ret[n][:title].should == $entries[n][:title]
