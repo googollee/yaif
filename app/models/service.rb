@@ -18,8 +18,7 @@ class Service < ActiveRecord::Base
     data = AuthHelper.send("#{auth_type}_get_meta", self, session)
     metas = ServiceMetaWithUser.where :service_id => self, :user_id => user
     return ServiceMetaWithUser.create!(:service => self, :user => user, :data => data) if metas.length == 0
-    metas[0].data = data
-    metas[0].save!
+    metas[0].update_attributes! :data => data
   end
 
   def meta(user)
@@ -30,7 +29,7 @@ class Service < ActiveRecord::Base
 
   def inner_runtime(params = nil)
     inner = RuntimeHelper::InnerRuntime.new params
-    inner.instance_eval helper
+    inner.instance_eval self.helper
     inner
   end
 end

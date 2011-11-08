@@ -35,27 +35,37 @@ trigger:
     source: http://www.douban.com/feed/people/#{name}/interests
     out_keys: [title, link, comment]
     content_to_hash: >
-      convert_atom_to_json content
-
-  - name: 书的评论
-    description: 跟踪一本书的评论信息
-    http_type: oauth
-    http_method: get
-    in_keys: [id]
-    source: /book/subject/#{id}/reviews?alt=json
-    out_keys: [title, link, comment]
-    content_to_hash: >
-      convert_douban_commit content
+      ret = []
+      (xml(content) / 'rss > channel > item').each do |item|
+        ret << {
+          :title => (item / 'title').inner_text,
+          :description => (item / 'description').inner_text,
+          :link => (item / 'link').inner_text,
+          :update => Time.parse((item / 'pubDate').inner_text)
+        }
+      end
+      ret
 
   - name: 我说
     description: 获得我说的信息
     http_type: oauth
     http_method: get
-    in_keys:
-    source: /miniblog/saying
-    out_keys: [content, tags, links, users]
+    in_keys: [name]
+    source: /people/#{name}/miniblog
+    out_keys: [content, image_link, related_link]
     content_to_hash: >
-      content
+      ret = []
+      (xml(content) / 'feed > entry').each do |entry|
+        image = (entry / 'link[@rel="image"]')
+        related = (entry / 'link[@rel="related"]')
+        ret << {
+          :title => (entry / 'title').inner_text,
+          :image_link => (image.length != 0) ? image.attr('href').value : '',
+          :related_link => (related.length != 0) ? related.attr('href').value : '',
+          :updated => Time.parse((entry / 'published').inner_text)
+        }
+      end
+      ret
 
 action:
   - name: 我说

@@ -1,3 +1,6 @@
+require 'time'
+require 'nokogiri'
+
 module RuntimeHelper
   extend self
 
@@ -14,6 +17,10 @@ module RuntimeHelper
       return self.send(m, *args, &block) if self.respond_to? m
       return @params[m] if @params and @params.include? m
       super
+    end
+
+    def xml(xml_str)
+      Nokogiri::XML(xml_str)
     end
   end
 

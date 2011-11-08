@@ -7,5 +7,11 @@ describe RuntimeHelper do
       inner_runtime.a.should == 1
       inner_runtime.b.should == "2"
     end
+
+    it "should have xml method to get DOM" do
+      rt = InnerRuntime.new nil
+      doc = rt.xml('<abc>a</abc>')
+      (doc/'abc').inner_text.should == "a"
+    end
   end
 end

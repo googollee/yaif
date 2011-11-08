@@ -27,10 +27,10 @@ module RequestHelper
         :scheme => meta[:scheme],
         :signature_method => meta[:signature_method],
         :realm => root_url
-      }
+      },
     )
-    access_token = OAuth::AccessToken.new consumer, meta[:access_token], meta[:access_key]
-    res = access_token.send method, get_uri(uri).path, body
+    access_token = OAuth::AccessToken.new consumer, meta[:access_token], meta[:access_secret]
+    res = access_token.send method, uri, body
     get_body res
   end
 
