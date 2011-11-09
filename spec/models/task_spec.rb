@@ -117,17 +117,17 @@ describe Task do
       @task.run
       @task.reload
       @task.last_run.day.should == 1.minute.ago.day
-      $content << {:title => "3", :published => Time.now}
+      $content << {:title => "3", :published => 0.day.ago}
       @task.run
       @task.reload
-      @task.last_run.day.should == Time.now.day
+      @task.last_run.day.should == 0.day.ago.day
     end
 
     it "should update last run even if last run initial with nil" do
       @task.last_run = nil
       @task.save
       @task.run
-      @task.last_run.day.should == Time.now.day
+      @task.last_run.day.should == 0.day.ago.day
     end
 
     it "should update last run time even if no published data" do
@@ -142,7 +142,7 @@ EOF
       @task.last_run = 3.day.ago
       @task.run
       @task.reload
-      @task.last_run.day.should == Time.now.day
+      @task.last_run.day.should == 0.day.ago.day
     end
   end
 end
