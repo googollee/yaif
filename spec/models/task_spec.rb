@@ -122,5 +122,27 @@ describe Task do
       @task.reload
       @task.last_run.day.should == Time.now.day
     end
+
+    it "should update last run even if last run initial with nil" do
+      @task.last_run = nil
+      @task.save
+      @task.run
+      @task.last_run.day.should == Time.now.day
+    end
+
+    it "should update last run time even if no published data" do
+      $content = [{:title => "1"}]
+      @task.trigger.content_to_hash = <<EOF
+        parse_json content do |i|
+          { :title => i["title"] }
+        end
+EOF
+      @task.trigger.save
+
+      @task.last_run = 3.day.ago
+      @task.run
+      @task.reload
+      @task.last_run.day.should == Time.now.day
+    end
   end
 end

@@ -40,7 +40,7 @@ trigger:
           :title => (item / 'title').inner_text,
           :description => (item / 'description').inner_text,
           :link => (item / 'link').inner_text,
-          :update => Time.parse((item / 'pubDate').inner_text)
+          :published => Time.parse((item / 'pubDate').inner_text)
         }
       end
 
@@ -59,7 +59,7 @@ trigger:
           :title => (entry / 'title').inner_text,
           :image_link => (image.length != 0) ? image.attr('href').value : '',
           :related_link => (related.length != 0) ? related.attr('href').value : '',
-          :updated => Time.parse((entry / 'published').inner_text)
+          :published => Time.parse((entry / 'published').inner_text)
         }
       end
 

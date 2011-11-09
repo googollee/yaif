@@ -17,8 +17,8 @@ class Task < ActiveRecord::Base
 
   def filter_items(items)
     items.each do |i|
-      yield i unless last_run && (i[:published] <= last_run)
-      @last_run = i[:published] unless @last_run && (i[:published] <= @last_run)
+      yield i unless last_run && i[:published] && (i[:published] <= last_run)
+      @last_run = i[:published] unless @last_run && i[:published] && (i[:published] <= @last_run)
     end
   end
 
@@ -32,7 +32,7 @@ class Task < ActiveRecord::Base
       send_to_action i
     end
     self.run_count += 1
-    self.last_run = @last_run || Tiime.now
+    self.last_run = @last_run || Time.now
     save
   end
 end
