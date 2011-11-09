@@ -48,7 +48,11 @@ FactoryGirl.define do
     source "http://test/trigger"
     header {}
     out_keys [:content]
-    content_to_hash "content"
+    content_to_hash <<EOF
+      parse_json content do |i|
+        { :title => i["title"], :published => Time.parse(i["published"]) }
+      end
+EOF
     association :service
   end
 

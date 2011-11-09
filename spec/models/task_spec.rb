@@ -66,6 +66,10 @@ describe Task do
     before :each do
       @trigger_meta = Factory(:service_meta_with_user, :user => @user, :service => @trigger.service, :data => { :from => "trigger" })
       @action_meta = Factory(:service_meta_with_user, :user => @user, :service => @action.service, :data => { :from => "action" })
+      $content = [
+        {:title => "1", :published => 2.day.ago},
+        {:title => "2", :published => 1.minute.ago}
+      ]
       module RequestHelper
         class << self
           def direct_request(method, uri, body, meta={})
@@ -74,7 +78,7 @@ describe Task do
             $body = body
             $meta = meta
 
-            {}.to_json
+            $content.to_json
           end
         end
       end
@@ -91,6 +95,14 @@ describe Task do
       $meta[:from].should == "action"
     end
 
+    it "should filter the published date" do
+      @task.last_run = 1.day.ago
+      @task.save
+      @task.filter_items $content do |item|
+        item[:title].should == "2"
+      end
+    end
+
     it "should add run count" do
       @task.run
       @task.reload
@@ -101,12 +113,14 @@ describe Task do
     end
 
     it "should update last run time" do
+      @task.last_run = 3.day.ago
       @task.run
       @task.reload
-      last_run = @task.last_run
+      @task.last_run.day.should == 1.minute.ago.day
+      $content << {:title => "3", :published => Time.now}
       @task.run
       @task.reload
-      @task.last_run.should > last_run
+      @task.last_run.day.should == Time.now.day
     end
   end
 end

@@ -11,11 +11,28 @@ class Task < ActiveRecord::Base
   belongs_to :trigger
   belongs_to :action
 
+  def get_from_trigger
+    trigger.get user, trigger_params
+  end
+
+  def filter_items(items)
+    items.each do |i|
+      yield i unless last_run && (i[:published] <= last_run)
+      @last_run = i[:published] unless @last_run && (i[:published] <= @last_run)
+    end
+  end
+
+  def send_to_action(item)
+    action.send_request user, item
+  end
+
   def run
-    content = self.trigger.get self.user, self.trigger_params
-    self.action.send_request self.user, ActiveSupport::JSON.decode(content)
+    @last_run = last_run
+    filter_items get_from_trigger do |i|
+      send_to_action i
+    end
     self.run_count += 1
-    self.last_run = Time.now
-    self.save
+    self.last_run = @last_run || Tiime.now
+    save
   end
 end

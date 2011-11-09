@@ -14,12 +14,6 @@ module RuntimeHelper
       instance_eval str
     end
 
-    def parse_xml(content, selector)
-      (xml(content) / selector).inject([]) do |o, i|
-        o << (yield i)
-      end
-    end
-
     def method_missing(m, *args, &block)
       return self.send(m, *args, &block) if self.respond_to? m
       return @params[m] if @params and @params.include? m
@@ -28,6 +22,22 @@ module RuntimeHelper
 
     def xml(xml_str)
       Nokogiri::XML(xml_str)
+    end
+
+    def parse_xml(content, selector)
+      (xml(content) / selector).inject([]) do |o, i|
+        o << (yield i)
+      end
+    end
+
+    def json(json_str)
+      ActiveSupport::JSON.decode(json_str)
+    end
+
+    def parse_json(json_str, selector=nil)
+      json(json_str).inject([]) do |o, i|
+        o << (yield i)
+      end
     end
   end
 
