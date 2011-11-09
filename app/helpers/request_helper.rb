@@ -18,7 +18,7 @@ module RequestHelper
     get_body res
   end
 
-  def oauth_request(method, uri, body, meta)
+  def oauth_request(method, path, body, meta)
     consumer = OAuth::Consumer.new(
       meta[:key],
       meta[:secret],
@@ -32,9 +32,9 @@ module RequestHelper
     access_token = OAuth::AccessToken.new consumer, meta[:access_token], meta[:access_secret]
     get_body case method
       when :get, :delete, :head
-        access_token.send method, uri, meta[:header]
+        access_token.send method, path, meta[:header]
       else
-        access_token.send method, uri, body, meta[:header]
+        access_token.send method, path, body, meta[:header]
       end
   end
 
