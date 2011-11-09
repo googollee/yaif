@@ -16,6 +16,7 @@ describe Trigger do
               :http_method => "get",
               :in_keys => [:user_id],
               :source => 'http://test/trigger/#{user_id}',
+              :header => { "Content-Type" => "application/xml" },
               :out_keys => [:title, :link],
               :content_to_hash => '
                 require "time"
@@ -114,6 +115,7 @@ describe Trigger do
       $uri.should == "http://test/trigger/123"
       $body.should == nil
       $meta[:pass].should == "xyz"
+      $meta[:header].should == @attr[:header]
       5.times do |n|
         ret[n][:title].should == $entries[n][:title]
         ret[n][:link].should == $entries[n][:link]

@@ -9,6 +9,7 @@ class Trigger < ActiveRecord::Base
   validates :service, :presence => true
 
   serialize :in_keys, Array
+  serialize :header, Hash
   serialize :out_keys, Array
 
   belongs_to :service
@@ -35,7 +36,8 @@ class Trigger < ActiveRecord::Base
   end
 
   def meta
-    service.meta @user
+    ret = service.meta(@user) || {}
+    ret.merge! :header => header
   end
 
   def uri

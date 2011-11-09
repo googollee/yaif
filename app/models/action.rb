@@ -8,6 +8,7 @@ class Action < ActiveRecord::Base
   validates :service, :presence => true
 
   serialize :in_keys, Array
+  serialize :header, Hash
 
   belongs_to :service
 
@@ -34,6 +35,7 @@ class Action < ActiveRecord::Base
   end
 
   def meta
-    service.meta @user
+    ret = service.meta(@user) || {}
+    ret.merge! :header => header
   end
 end

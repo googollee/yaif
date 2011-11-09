@@ -46,6 +46,7 @@ FactoryGirl.define do
     http_method "get"
     in_keys []
     source "http://test/trigger"
+    header {}
     out_keys [:content]
     content_to_hash "content"
     association :service
@@ -58,6 +59,7 @@ FactoryGirl.define do
     http_method "post"
     in_keys  []
     target "http://test/action"
+    header {}
     body '"abc"'
     association :service
   end

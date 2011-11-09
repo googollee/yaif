@@ -88,7 +88,7 @@ describe Task do
       $method.should == :post
       $uri.should == "http://test/action"
       $body.should == "abc"
-      $meta.should == { :from => "action" }
+      $meta[:from].should == "action"
     end
 
     it "should add run count" do

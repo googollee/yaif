@@ -9,6 +9,7 @@ describe Action do
               :http_method => "post",
               :in_keys => [:id, :content],
               :target => 'http://test/action/#{id}',
+              :header => { "Content-Type" => "appplication/xml" },
               :body => '"#{content}"',
               :service => @service }
   end
@@ -88,6 +89,7 @@ describe Action do
       $uri.should == "http://test/action/123"
       $body.should == "abc"
       $meta[:pass].should == "xyz"
+      $meta[:header].should == @attr[:header]
     end
 
     it "should call service when not find method" do

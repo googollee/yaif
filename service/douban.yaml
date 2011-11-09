@@ -70,6 +70,8 @@ action:
     http_method: post
     in_keys: [content]
     target: /miniblog/saying
+    header:
+      Content-Type: application/atom+xml
     body: >
       post_douban :content => content
 

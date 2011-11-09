@@ -7,6 +7,7 @@ class CreateTriggers < ActiveRecord::Migration
       t.string :http_method
       t.text :in_keys
       t.string :source
+      t.text :header
       t.text :out_keys
       t.text :content_to_hash
       t.references :service
