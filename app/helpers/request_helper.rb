@@ -30,8 +30,12 @@ module RequestHelper
       },
     )
     access_token = OAuth::AccessToken.new consumer, meta[:access_token], meta[:access_secret]
-    res = access_token.send method, uri, body, meta[:headers]
-    get_body res
+    get_body case method
+      when :get, :delete, :head
+        access_token.send method, uri, meta[:header]
+      else
+        access_token.send method, uri, body, meta[:header]
+      end
   end
 
 
