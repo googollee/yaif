@@ -6,6 +6,7 @@ class Task < ActiveRecord::Base
 
   serialize :trigger_params, Hash
   serialize :action_params, Hash
+  serialize :error_log, Hash
 
   belongs_to :user
   belongs_to :trigger
@@ -27,9 +28,14 @@ class Task < ActiveRecord::Base
   end
 
   def run
-    @last_run = last_run
-    filter_items get_from_trigger do |i|
-      send_to_action i
+    begin
+      self.error_log = {}
+      @last_run = last_run
+      filter_items get_from_trigger do |i|
+        send_to_action i
+      end
+    rescue Exception => e
+      self.error_log = { :message => e.message, :backtrace => e.backtrace }
     end
     self.run_count += 1
     self.last_run = @last_run || Time.now

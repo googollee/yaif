@@ -9,6 +9,7 @@ class CreateTasks < ActiveRecord::Migration
       t.text :action_params
       t.integer :run_count, :default => 0
       t.datetime :last_run
+      t.text :error_log
 
       t.timestamps
     end

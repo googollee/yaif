@@ -144,5 +144,18 @@ EOF
       @task.reload
       @task.last_run.day.should == 0.day.ago.day
     end
+
+    it "should save error message when run failed" do
+      module RequestHelper
+        class << self
+          def direct_request(method, uri, body, meta={})
+            raise "run failed"
+          end
+        end
+      end
+
+      @task.run
+      @task.error_log[:message].should =~ /run failed/i
+    end
   end
 end

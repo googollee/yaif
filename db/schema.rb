@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20111102054413) do
     t.text     "action_params"
     t.integer  "run_count",      :default => 0
     t.datetime "last_run"
+    t.text     "error_log"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

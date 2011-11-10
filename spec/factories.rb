@@ -75,6 +75,7 @@ EOF
     trigger_params {}
     association :action
     action_params {}
+    error_log {}
   end
 
   factory :service_meta_with_user do
