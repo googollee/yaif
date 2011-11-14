@@ -1,11 +1,11 @@
 service:
   name: douban
-  icon: http://img3.douban.com/pics/nav/lg_main_a7.png # or http://www.douban.com/favicon.png
+  icon: http://img3.douban.com/pics/nav/lg_main_a7.png
   description: 豆瓣
   auth_type: oauth1
   auth_data:
-    key: 0928d9d3dc6c5d801b7a8d7b95451880
-    secret: 8d8ee3431d2c7fbe
+    key: input your douban key
+    secret: input your douban secret
     auth_site: http://www.douban.com
     access_site: http://api.douban.com
     request_token_source: /service/auth/request_token
