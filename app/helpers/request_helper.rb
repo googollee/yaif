@@ -2,6 +2,7 @@ require 'net/http'
 require 'net/https'
 
 require 'oauth'
+require 'twitter'
 
 module RequestHelper
   extend self
@@ -38,6 +39,22 @@ module RequestHelper
       end
   end
 
+  def twitter_request(method, path, body, meta)
+    client = Twitter::Client.new :consumer_key => meta[:key],
+                                 :consumer_secret => meta[:secret],
+                                 :oauth_token => meta[:access_token],
+                                 :oauth_token_secret => meta[:access_secret]
+    action = path.split('/')[2].split('.')[0]
+    ret = case method
+    when :get
+      client.send(action)
+    when :post
+      client.send(action, body)
+    else
+      raise "Doesn't know how to #{method} to #{path}."
+    end
+    ret.to_json
+  end
 
   private
 
