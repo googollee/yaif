@@ -5,6 +5,7 @@ class CreateTriggers < ActiveRecord::Migration
       t.text :description
       t.string :http_type
       t.string :http_method
+      t.string :period
       t.text :in_keys
       t.string :source
       t.text :header

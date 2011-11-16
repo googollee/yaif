@@ -44,6 +44,7 @@ FactoryGirl.define do
     description "a test trigger"
     http_type "direct"
     http_method "get"
+    period "*/10 * * * *"
     in_keys []
     source "http://test/trigger"
     header {}

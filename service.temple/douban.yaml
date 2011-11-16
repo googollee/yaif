@@ -31,6 +31,7 @@ trigger:
     description: 个人在豆瓣的更新信息
     http_type: direct
     http_method: get
+    period: */10 * * * *
     in_keys: [name]
     source: http://www.douban.com/feed/people/#{name}/interests
     out_keys: [title, link, comment]
@@ -48,6 +49,7 @@ trigger:
     description: 获得我说的信息
     http_type: oauth
     http_method: get
+    period: */10 * * * *
     in_keys: [name]
     source: /people/#{name}/miniblog
     out_keys: [content, image_link, related_link]

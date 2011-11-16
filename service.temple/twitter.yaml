@@ -20,6 +20,7 @@ trigger:
     description: users tweets
     http_type: twitter
     http_method: get
+    period: */10 * * * *
     in_keys: []
     source: /statuses/user_timeline.json
     out_keys: [title, link, comment]

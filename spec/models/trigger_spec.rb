@@ -14,6 +14,7 @@ describe Trigger do
               :description => "a test trigger",
               :http_type => "direct",
               :http_method => "get",
+              :period => "*/10 * * * *",
               :in_keys => [:user_id],
               :source => 'http://test/trigger/#{user_id}',
               :header => { "Content-Type" => "application/xml" },
