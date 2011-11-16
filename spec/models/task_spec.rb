@@ -11,7 +11,8 @@ describe Task do
       :trigger => @trigger,
       :trigger_params => {},
       :action => @action,
-      :action_params => {} }
+      :action_params => {}
+    }
   end
 
   describe "create" do
@@ -86,15 +87,6 @@ describe Task do
       @task = Task.create!(@attr)
     end
 
-    it "should do action" do
-      @task.run
-
-      $method.should == :post
-      $uri.should == "http://test/action"
-      $body.should == "abc"
-      $meta[:from].should == "action"
-    end
-
     it "should filter the published date" do
       @task.last_run = 1.day.ago
       @task.save
@@ -156,6 +148,41 @@ EOF
 
       @task.run
       @task.error_log[:message].should =~ /run failed/i
+    end
+  end
+
+  describe "whole work flow" do
+    before :each do
+      @trigger = Factory(:trigger, :content_to_hash => "[{:title => 'Just test!', :published => Time.now}]")
+      @trigger_meta = Factory(:service_meta_with_user, :user => @user, :service => @trigger.service, :data => { :from => "trigger" })
+      @action = Factory(:action, :in_keys => [:content], :body => '"#{content}"')
+      @action_meta = Factory(:service_meta_with_user, :user => @user, :service => @action.service, :data => { :from => "action" })
+
+      @attr[:trigger] = @trigger
+      @attr[:action] = @action
+      @attr[:action_params] = { :content => '#{title}' }
+
+      module RequestHelper
+        class << self
+          def direct_request(method, uri, body, meta={})
+            $method = method
+            $uri = uri
+            $body = body
+            $meta = meta
+          end
+        end
+      end
+
+      @task = Task.create!(@attr)
+    end
+
+    it "should do action" do
+      @task.run
+
+      $method.should == :post
+      $uri.should == "http://test/action"
+      $body.should == "Just test!"
+      $meta[:from].should == "action"
     end
   end
 end

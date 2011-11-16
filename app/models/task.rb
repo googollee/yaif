@@ -24,7 +24,12 @@ class Task < ActiveRecord::Base
   end
 
   def send_to_action(item)
-    action.send_request user, item
+    rt ||= RuntimeHelper::InnerRuntime.new
+    rt.add_params item
+    params = action.in_keys.inject({}) do |o, k|
+      o.merge! k => (rt.eval "\"#{action_params[k]}\"")
+    end
+    action.send_request user, params
   end
 
   def run

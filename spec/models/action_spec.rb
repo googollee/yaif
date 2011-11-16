@@ -97,11 +97,24 @@ describe Action do
                           def test_helper(a)
                             a.to_s
                           end")
+      meta = Factory(:service_meta_with_user,
+                     :service => service,
+                     :user => @user,
+                     :data => {})
       @attr[:body] = "test_helper(1)"
       @attr[:service] = service
       @action = Action.new(@attr)
       @action.send_request @user, :updated => Time.now, :id => "123"
       $body.should == "1"
+    end
+
+    it "should raise error when no meta" do
+      service = Factory(:service)
+      @attr[:service] = service
+      @action = Action.new(@attr)
+      lambda do
+        @action.send_request(@user, {})
+      end.should raise_error
     end
   end
 end

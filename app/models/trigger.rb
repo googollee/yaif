@@ -36,7 +36,8 @@ class Trigger < ActiveRecord::Base
   end
 
   def meta
-    ret = service.meta(@user) || {}
+    ret = service.meta(@user)
+    raise "Need register service(#{service.name}) first" unless ret
     ret.merge! :header => header
   end
 
