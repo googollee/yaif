@@ -1,5 +1,4 @@
 require 'yaml'
-require 'pp'
 
 namespace :service do
   desc "Import service information into database"
