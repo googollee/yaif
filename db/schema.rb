@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111102054413) do
+ActiveRecord::Schema.define(:version => 20111124143443) do
 
   create_table "actions", :force => true do |t|
     t.string   "name"
@@ -28,6 +28,14 @@ ActiveRecord::Schema.define(:version => 20111102054413) do
   end
 
   add_index "actions", ["service_id"], :name => "index_actions_on_service_id"
+
+  create_table "reg_keys", :force => true do |t|
+    t.string   "key"
+    t.string   "email"
+    t.integer  "validation", :default => 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "service_meta_with_user", :force => true do |t|
     t.integer  "service_id"
