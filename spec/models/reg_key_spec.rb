@@ -44,11 +44,11 @@ describe RegKey do
     key.validate.should be_false
   end
 
-  it "should check validate though email" do
+  it "should get user though email" do
     key = RegKey.new @attr
     key.save
 
-    RegKey.check_validate(@attr[:email]).should be_true
-    RegKey.check_validate(@attr[:email]).should be_false
+    RegKey.get_validate_key(@attr[:key]).should == key
+    RegKey.get_validate_key(@attr[:key]).should == nil
   end
 end
