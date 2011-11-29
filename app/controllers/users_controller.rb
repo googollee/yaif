@@ -3,8 +3,7 @@ class UsersController < ApplicationController
   before_filter :not_sign_in, :only => [:new, :create]
 
   def new
-    key = RegKey.get_validate_key params[:reg_key]
-    puts "key = #{key}"
+    key = RegKey.get_validate_by_key params[:reg_key]
     if key
       @user = User.new :name => key.email.split("@")[0], :email => key.email
     else
@@ -14,11 +13,17 @@ class UsersController < ApplicationController
   end
 
   def create
+    key = RegKey.get_validate_by_email params[:user][:email]
+    unless key
+      flash[:error] = "#{params[:user][:email]} doesn't be invited."
+      redirect_to root
+    end
     @user = User.new(params[:user])
     if @user.save
+      key.mark_used
       sign_in @user
       flash[:success] = "Welcome to Yet Another IFttt!"
-      redirect_to @user
+      redirect_to root_path
     else
       @user.password = @user.password_confirmation = ''
       render 'new'

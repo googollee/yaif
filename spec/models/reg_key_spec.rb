@@ -40,15 +40,38 @@ describe RegKey do
   it "should do validate and turn to non-validate status" do
     key = RegKey.new @attr
     key.save
-    key.validate.should be_true
-    key.validate.should be_false
+    key.validate?.should be_true
+    key.validate?.should be_true
+  end
+
+  it "should be marked used" do
+    key = RegKey.new @attr
+    key.save
+
+    key.validate?.should be_true
+    key.mark_used
+
+    key.reload
+    key.validate?.should be_false
+  end
+
+  it "should get user though key" do
+    key = RegKey.new @attr
+    key.save
+
+    RegKey.get_validate_by_key(@attr[:key]).should == key
+
+    key.mark_used
+    RegKey.get_validate_by_key(@attr[:key]).should == nil
   end
 
   it "should get user though email" do
     key = RegKey.new @attr
     key.save
 
-    RegKey.get_validate_key(@attr[:key]).should == key
-    RegKey.get_validate_key(@attr[:key]).should == nil
+    RegKey.get_validate_by_email(@attr[:email]).should == key
+
+    key.mark_used
+    RegKey.get_validate_by_email(@attr[:email]).should == nil
   end
 end
