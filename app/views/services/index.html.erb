@@ -1,0 +1,29 @@
+<h1>Services</h1>
+
+<%= link_to "this", {:action => "services_with_trigger"}, :remote => true, :id => "choosed_trigger" %>
+<%= link_to "that", {:action => "services_with_action"}, :remote => true, :id => "choosed_action" %>
+
+<div id="services_with_trigger_index" class="services_list"></div>
+<div id="trigger_index" class="services_list"></div>
+<div id="services_with_action_index" class="services_list"></div>
+<div id="action_index" class="services_list"></div>
+
+<script>
+  function set_trigger(service_id, trigger_id) {
+    icon_src = $("#service_item_" + service_id + " .sicon").html();
+    name_src = $("#trigger_item_" + service_id + "_" + trigger_id + " .tname").html();
+    src = '<div class="icon">' + icon_src + '</div>';
+    src += '<div class="name">' + name_src + '</div>';
+    $("#choosed_trigger").html(src);
+    $("#services_with_trigger_index, #trigger_index").html("");
+  }
+
+  function set_action(service_id, action_id) {
+    icon_src = $("#service_item_" + service_id + " .sicon").html();
+    name_src = $("#action_item_" + service_id + "_" + action_id + " .tname").html();
+    src = '<div class="icon">' + icon_src + '</div>';
+    src += '<div class="name">' + name_src + '</div>';
+    $("#choosed_action").html(src);
+    $("#services_with_action_index, #action_index").html("");
+  }
+</script>

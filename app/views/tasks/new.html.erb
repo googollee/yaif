@@ -1,0 +1,132 @@
+<h1>Create Task</h1>
+
+<div>
+  <div id="service_chooser">
+    <div id="title">
+      if
+      <span id="trigger_chooser">
+        <%= link_to "this", {:controller => "services", :action => "services_with_trigger"}, :remote => true, :id => "choosed_trigger" %>
+      </span>
+      then
+      <span id="action_chooser">
+        that
+      </span>
+    </div>
+
+    <div id="services_with_trigger_index" class="services_list"></div>
+    <div id="trigger_index" class="services_list"></div>
+    <div id="services_with_action_index" class="services_list"></div>
+    <div id="action_index" class="services_list"></div>
+  </div>
+
+  <div>
+    <div>Trigger out keys:</div>
+    <div id="trigger_out_keys"></div>
+  </div>
+
+  <%= form_for(@task) do |f| %>
+    <%= render 'shared/error_messages', :object => f.object %>
+    <div class="field">
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </div>
+    <div class="hidden">
+      <%= f.hidden_field :trigger_id %>
+      <%= f.hidden_field :action_id %>
+    </div>
+    <div>
+      <div>Trigger in params:</div>
+      <div id="trigger_params"></div>
+    </div>
+    <div>
+      <div>Acition in params:</div>
+      <div id="action_params"></div>
+    </div>
+    <div class="actions">
+      <%= f.submit "Create" %>
+    </div>
+  <% end %>
+
+</div>
+
+<script>
+  function set_in_keys(id_str, keys) {
+    html = '';
+    for (i in keys) {
+      html += '<label>' + keys[i] + '</label>';
+      html += '<input name="task[' + id_str.substr(1) + '][' + keys[i] + ']" size="30" type="text" />';
+    }
+    $(id_str).html(html);
+  }
+
+  function set_out_keys(id_str, keys) {
+    html = '<ul>';
+    for (i in keys) {
+      html += '<li>' + keys[i] + '</li>';
+    }
+    html += '</ul>';
+    $(id_str).html(html);
+  }
+
+  function get_service_dom_id(service_id) {
+    return "#service_item_" + service_id;
+  }
+
+  function get_dom_id(channel, service_id, channel_id) {
+    return "#" + channel + "_item_" + service_id + "_" + channel_id;
+  }
+
+  function set_channel_id(channel, channel_id) {
+    $('#task_' + channel + '_id').attr('value', '' + channel_id);
+  }
+
+  function grab_and_set_keys(channel, type, grab_id) {
+    keys = JSON.parse($(grab_id + " ." + type + "_keys").html());
+
+    if (type == "in") {
+      set_in_keys("#" + channel + "_params", keys);
+    } else {
+      set_out_keys("#" + channel + "_" + type + "_keys", keys);
+    }
+  }
+
+  function set_choice(service_dom_id, channel_dom_id, channel) {
+    icon_src = $(service_dom_id + " .sicon").html();
+    name_src = $(channel_dom_id + " .name").html();
+    src = '<div class="icon">' + icon_src + '</div>';
+    src += '<div class="name">' + name_src + '</div>';
+
+    $("#" + channel + "_chooser").html(src);
+    $("#services_with_" + channel + "_index, #" + channel + "_index").html("");
+  }
+
+  function set_trigger(service_id, trigger_id) {
+    service_dom_id = get_service_dom_id(service_id);
+    trigger_dom_id = get_dom_id("trigger", service_id, trigger_id);
+
+    set_channel_id("trigger", trigger_id);
+
+    grab_and_set_keys("trigger", "in", trigger_dom_id);
+    grab_and_set_keys("trigger", "out", trigger_dom_id);
+
+    set_choice(service_dom_id, trigger_dom_id, "trigger");
+
+    $("#action_chooser").html('<%= link_to "that", {:controller => "services", :action => "services_with_action"}, :remote => true, :id => "choosed_action" %>');
+  }
+
+  function set_action(service_id, action_id) {
+    service_dom_id = get_service_dom_id(service_id);
+    action_dom_id = get_dom_id("action", service_id, action_id);
+
+    set_channel_id("action", action_id);
+
+    grab_and_set_keys("action", "in", action_dom_id);
+
+    set_choice(service_dom_id, action_dom_id, "action");
+
+    $("#new_task").show();
+  }
+
+$("#new_task").hide();
+</script>
+

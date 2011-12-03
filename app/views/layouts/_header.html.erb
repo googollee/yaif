@@ -4,7 +4,7 @@
       <li><%= link_to "Home", root_path %></li>
       <% if current_user %>
         <li><%= link_to "Profile", edit_user_path(current_user) %></li>
-        <li><%= link_to "Task", "task_path" %></li>
+        <li><%= link_to "Task", new_task_path %></li>
         <li><%= link_to "Sign out", signout_path %></li>
       <% else %>
         <li><%= link_to "Sign in", signin_path %></li>

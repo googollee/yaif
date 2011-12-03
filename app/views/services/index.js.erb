@@ -1,0 +1,13 @@
+html = '<ul id="services_list">';
+<% @services.each do |s| %>
+html += '<li class="service_item" id="service_item_<%= s.id %>">';
+html += '  <div class="sicon"><img src="<%= s.icon %>" /></div>';
+html += '  <div class="sname">Name: <%= s.name %></div>';
+html += '  <div class="sdesc">Description: <%= s.description %></div>';
+html += '  <div class="strigger"><a href="<%= service_triggers_path s %>">Triggers</a></div>';
+html += '  <div class="saction"><a href="<%= service_actions_path s %>">Actions</a></div>';
+html += '</li>';
+<% end %>
+html += '</ul>';
+
+$('#services_index').html(html);

@@ -1,0 +1,14 @@
+html = '<ul id="trigger_list">';
+<% @triggers.each do |t| %>
+html += '<li class="trigger_item" id="trigger_item_<%= t.service.id %>_<%= t.id %>">';
+html += '  <a onclick="set_trigger(<%= t.service.id %>, <%= t.id %>);return false;" href="#">';
+html += '    <div class="name"><%= t.name %></div>';
+html += '    <div class="desc"><%= t.description %></div>';
+html += '    <div class="in_keys" style="display:none"><%= t.in_keys.to_json %></div>';
+html += '    <div class="out_keys" style="display:none"><%= t.out_keys.to_json %></div>';
+html += '  </a>';
+html += '</li>';
+<% end %>
+html += '</ul>';
+
+$('#trigger_index').html(html);

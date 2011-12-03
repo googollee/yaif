@@ -1,0 +1,14 @@
+html = '<ul id="services_with_trigger_list">';
+<% @services.each do |s| %>
+html += '<li class="service_item" id="service_item_<%= s.id %>">';
+html += '  <a href="<%= service_triggers_path s %>" data-remote="true">';
+html += '    <div class="sicon"><img src="<%= s.icon %>" /></div>';
+html += '    <div class="sname">Name: <%= s.name %></div>';
+html += '    <div class="sdesc">Description: <%= s.description %></div>';
+html += '  </a>';
+html += '</li>';
+<% end %>
+html += '</ul>';
+
+$('.services_list').html('');
+$('#services_with_trigger_index').html(html);

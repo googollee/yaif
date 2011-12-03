@@ -1,0 +1,13 @@
+html = '<ul id="action_list">';
+<% @actions.each do |a| %>
+html += '<li class="action_item" id="action_item_<%= a.service.id %>_<%= a.id %>">';
+html += '  <a onclick="set_action(<%= a.service.id %>, <%= a.id %>);return false;" href="#">';
+html += '    <div class="name"><%= a.name %></div>';
+html += '    <div class="desc"><%= a.description %></div>';
+html += '    <div class="in_keys" style="display:none"><%= a.in_keys.to_json %></div>';
+html += '  </a>';
+html += '</li>';
+<% end %>
+html += '</ul>';
+
+$('#action_index').html(html);
