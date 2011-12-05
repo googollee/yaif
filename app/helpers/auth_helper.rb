@@ -6,7 +6,7 @@ module AuthHelper
   RuntimeHelper.init_env(self)
 
   # noauth
-  def noauth_auth(service, session)
+  def noauth_auth(service, session, callback_url)
     nil
   end
 
@@ -25,7 +25,7 @@ module AuthHelper
   #   authorize_source: path of authorize
   #   signature_method: signature method
   #   scheme: usually :header
-  def oauth1_auth(service, session)
+  def oauth1_auth(service, session, callback_url)
     consumer = OAuth::Consumer.new(
       service.auth_data[:key],
       service.auth_data[:secret],
@@ -41,7 +41,7 @@ module AuthHelper
     )
 
     session[:request_token] = consumer.get_request_token
-    session[:request_token].authorize_url :oauth_callback => oauth_callback_url
+    session[:request_token].authorize_url :oauth_callback => callback_url
   end
 
   def oauth1_get_meta(service, session)
@@ -68,7 +68,7 @@ module AuthHelper
   #   authorize_source: path of authorize
   #   signature_method: signature method
   #   scheme: usually :header
-  def oauth1a_auth(service, session)
+  def oauth1a_auth(service, session, callback_url)
     consumer = OAuth::Consumer.new(
       service.auth_data[:key],
       service.auth_data[:secret],
@@ -83,7 +83,7 @@ module AuthHelper
       }
     )
 
-    session[:request_token] = consumer.get_request_token :oauth_callback => oauth_callback_url
+    session[:request_token] = consumer.get_request_token :oauth_callback => callback_url
     session[:request_token].authorize_url
   end
 

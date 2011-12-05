@@ -6,6 +6,11 @@ Yaif::Application.routes.draw do
   resources :services do
     resources :triggers
     resources :actions
+
+    member do
+      get 'auth'
+      get 'auth_callback'
+    end
   end
 
   match '/services_with_trigger', :to => 'services#services_with_trigger'

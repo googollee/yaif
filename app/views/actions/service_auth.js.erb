@@ -1,0 +1,6 @@
+html = '<p>Need active first</p>'
+html += '<a id="auth_button" href="<%= auth_service_url @service %>" data-remote="true">Active!</a>'
+html += '<a id="auth_next_button" href="<%= service_actions_path @service %>" data-remote="true">Next</a>'
+
+$('#action_index').html(html);
+$('#auth_next_button').hide();

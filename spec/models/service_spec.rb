@@ -73,8 +73,8 @@ describe Service do
       $auth_url = 'http://test/auth/url'
       module AuthHelper
         extend self
-        def test_auth(service, session)
-          $auth_url
+        def test_auth(service, session, callback_url)
+          "#{$auth_url}?callback=#{callback_url}"
         end
 
         def test_get_meta(service, session)
@@ -84,7 +84,7 @@ describe Service do
     end
 
     it "should get auth url" do
-      @service.auth({}).should == $auth_url
+      @service.auth({}, "http://callback_url").should == "#{$auth_url}?callback=http://callback_url"
     end
 
     it "should get nil if no meta data" do

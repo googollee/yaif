@@ -10,8 +10,8 @@ class Service < ActiveRecord::Base
   has_many :actions
   has_many :service_meta_with_user
 
-  def auth(session)
-    AuthHelper.send("#{auth_type}_auth", self, session)
+  def auth(session, callback_url)
+    AuthHelper.send("#{auth_type}_auth", self, session, callback_url)
   end
 
   def auth_meta(user, session)
