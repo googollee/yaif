@@ -9,6 +9,7 @@ Yaif::Application.routes.draw do
 
     member do
       get 'auth'
+      get 'redirect_to_auth_url'
       get 'auth_callback'
     end
   end
