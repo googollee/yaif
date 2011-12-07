@@ -12,6 +12,11 @@ class Task < ActiveRecord::Base
   belongs_to :trigger
   belongs_to :action
 
+  def save
+    self.last_run ||= Time.now
+    super
+  end
+
   def get_from_trigger
     trigger.get user, trigger_params
   end

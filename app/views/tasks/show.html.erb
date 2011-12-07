@@ -1,43 +1,7 @@
 <h1>Task: <%= @task.name %></h1>
 
-<div id="task-info">
-  <div id="task-trigger">
-    <image id="task-trigger-icon" class="icon" src="<%= @task.trigger.service.icon %>" />
-    <p id="task-trigger-name" class="name"><%= @task.trigger.name %></p>
-  </div>
-  <div id="task-pointer">
-    --&gt;
-  </div>
-  <div id="task-action">
-    <image id="task-action-icon" class="icon" src="<%= @task.action.service.icon %>" />
-    <p id="task-action-name" class="name"><%= @task.action.name %></p>
-  </div>
-</div>
-
-<div id="task-trigger-params">
-  <h2>Trigger params:</h2>
-  <ul>
-    <% @task.trigger_params.each do |k, v| %>
-      <li>
-        <p>
-          <span class="params-key"><%= k %></span>: <span class="params-value"><%= v %></span>
-        </p>
-      </li>
-    <% end %>
-  </ul>
-</div>
-
-<div id="task-action-params">
-  <h2>Action params:</h2>
-  <ul>
-    <% @task.action_params.each do |k, v| %>
-      <li>
-        <p>
-          <span class="params-key"><%= k %></span>: <span class="params-value"><%= v %></span>
-        </p>
-      </li>
-    <% end %>
-  </ul>
-</div>
+<%= render 'brief', :object => @task %>
+<%= render 'params', :params => @task.trigger_params, :id => "trigger" %>
+<%= render 'params', :params => @task.action_params, :id => "action" %>
 
 <%= link_to "Edit", edit_task_path(@task) %>

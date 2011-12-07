@@ -19,29 +19,15 @@
     <div id="action_index" class="services_list"></div>
   </div>
 
-  <div>
-    <div>Trigger out keys:</div>
-    <div id="trigger_out_keys"></div>
-  </div>
+  <%= render 'out_keys', :out_keys => [] %>
 
   <%= form_for(@task) do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
-    <div class="field">
-      <%= f.label :name %><br />
-      <%= f.text_field :name %>
-    </div>
-    <div class="hidden">
-      <%= f.hidden_field :trigger_id %>
-      <%= f.hidden_field :action_id %>
-    </div>
-    <div>
-      <div>Trigger in params:</div>
-      <div id="trigger_params"></div>
-    </div>
-    <div>
-      <div>Acition in params:</div>
-      <div id="action_params"></div>
-    </div>
+
+    <%= render 'name_field', :f => f %>
+    <%= render 'params', :params => [], :id => "trigger", :is_edit => true %>
+    <%= render 'params', :params => [], :id => "action", :is_edit => true %>
+
     <div class="actions">
       <%= f.submit "Create" %>
     </div>

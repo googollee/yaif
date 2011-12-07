@@ -21,6 +21,12 @@ describe Task do
       task.valid?.should be_true
     end
 
+    it "should use current time as last run initialize value" do
+      task = Task.new(@attr)
+      task.save
+      task.last_run.should_not == nil
+    end
+
     describe "fail" do
       after :each do
         task = Task.new(@attr)

@@ -1,0 +1,19 @@
+<% is_edit ||= false %>
+
+<div id="<%= id %>_params_outter">
+  <h2><%= id.capitalize %> params:</h2>
+  <div id="<%= id %>_params">
+    <ul>
+      <% params.each do |k, v| %>
+        <li>
+          <span class="<%= id %>_in_key params_key"><%= k %>:</span>
+          <% if is_edit %>
+            <input class="<%= id %>_in_value params_input" type="text" value="<%= v %>" />
+          <% else %>
+            <span class="<%= id %>_in_value params_value"><%= v %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

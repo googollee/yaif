@@ -13,12 +13,26 @@ class TasksController < ApplicationController
       redirect_to @task
     else
       puts 'failed'
-      render 'edit'
+      render 'new'
     end
   end
 
   def show
     @task = Task.find params[:id]
+  end
+
+  def edit
+    @task = Task.find params[:id]
+  end
+
+  def update
+    @task = Task.find params[:id]
+    if @task.update_attributes(params[:task])
+      flash[:success] = "Task updated."
+      redirect_to @task
+    else
+      render 'edit'
+    end
   end
 
   private

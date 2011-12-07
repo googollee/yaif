@@ -1,0 +1,15 @@
+<%= render 'brief', :object => @task %>
+
+<%= render 'out_keys', :out_keys => @task.trigger.out_keys %>
+
+<%= form_for(@task) do |f| %>
+  <%= render 'shared/error_messages', :object => f.object %>
+
+  <%= render 'name_field', :f => f %>
+  <%= render 'params', :params => @task.trigger_params, :id => "trigger", :is_edit => true %>
+  <%= render 'params', :params => @task.action_params, :id => "action", :is_edit => true %>
+
+  <div class="actions">
+    <%= f.submit "Update" %>
+  </div>
+<% end %>
