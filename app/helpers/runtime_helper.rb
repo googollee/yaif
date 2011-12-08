@@ -17,6 +17,8 @@ module RuntimeHelper
     def method_missing(m, *args, &block)
       return self.send(m, *args, &block) if self.respond_to? m
       return @params[m] if @params and @params.include? m
+      m = m.to_s
+      return @params[m] if @params and @params.include? m
       super
     end
 

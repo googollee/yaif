@@ -1,0 +1,5 @@
+<div>
+  <% @periods.each do |p| %>
+    <p><%= p %> curl -d "period=<%= p %>" <%= trigger_url %></p>
+  <% end %>
+</div>

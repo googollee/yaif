@@ -4,4 +4,14 @@
 <%= render 'params', :params => @task.trigger_params, :id => "trigger" %>
 <%= render 'params', :params => @task.action_params, :id => "action" %>
 
+<h2>Error:</h2>
+<div id="error">
+  <% if @task.error_log.include? :message %>
+    <%= @task.error_log[:message] %>
+  <% else %>
+    No error
+  <% end %>
+</div>
+
 <%= link_to "Edit", edit_task_path(@task) %>
+<%= link_to "Delete", task_path(@task), :method => :delete, :confirm => "Are you sure?" %>

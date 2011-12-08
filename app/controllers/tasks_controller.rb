@@ -35,6 +35,13 @@ class TasksController < ApplicationController
     end
   end
 
+  def destroy
+    @task = Task.find params[:id]
+    @task.delete
+    flash[:success] = "Task [#{@task.name}] was deleted."
+    redirect_to root_path
+  end
+
   private
 
   def must_signed
