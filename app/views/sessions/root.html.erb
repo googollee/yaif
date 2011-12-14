@@ -2,7 +2,7 @@
   <h1>Hello, <%= current_user.name %></h1>
   <h1>Tasks:</h1>
   <ul>
-    <% @tasks.each do |t| %>
+    <% current_user.tasks.each do |t| %>
       <li>
         <%= render 'tasks/brief', :object => t %>
         <div class="task-last-run">Last run at <%= t.last_run %></div>

@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
   def root
-    @tasks = current_user.tasks
   end
 
   def new
