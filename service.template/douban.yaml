@@ -1,0 +1,87 @@
+service:
+  name: douban
+  icon: http://img3.douban.com/pics/nav/lg_main_a7.png
+  description: 豆瓣
+  auth_type: oauth1
+  auth_data:
+    key: input your douban key
+    secret: input your douban secret
+    auth_site: http://www.douban.com
+    access_site: http://api.douban.com
+    request_token_source: /service/auth/request_token
+    access_token_source: /service/auth/access_token
+    authorize_source: /service/auth/authorize
+    signature_method: HMAC-SHA1
+    scheme: header
+  helper: >
+    def convert_douban_description(desc)
+      { :desc => desc }
+    end
+
+    def post_douban(paramss)
+      ret = %q{<?xml version='1.0' encoding='UTF-8'?><entry xmlns:ns0="http://www.w3.org/2005/Atom" xmlns:db="http://www.douban.com/xmlns/">}
+      paramss.each do |k, v|
+        ret += "<#{k}>#{v}</#{k}>"
+      end
+      ret += "</entry>"
+    end
+
+trigger:
+- name: 个人信息
+  description: 个人在豆瓣的更新信息
+  http_type: direct
+  http_method: get
+  period: */10 * * * *
+  in_keys: [name]
+  source: http://www.douban.com/feed/people/#{name}/interests
+  out_keys: [title, link, comment]
+  content_to_hash: >
+    parse_xml content, 'rss > channel > item' do |item|
+      {
+        :title => (item / 'title').inner_text,
+        :description => (item / 'description').inner_text,
+        :link => (item / 'link').inner_text,
+        :published => Time.parse((item / 'pubDate').inner_text)
+      }
+    end
+
+- name: 我说
+  description: 获得我说的信息
+  http_type: oauth
+  http_method: get
+  period: */10 * * * *
+  in_keys: [name]
+  source: /people/#{name}/miniblog
+  out_keys: [content, image_link, related_link]
+  content_to_hash: >
+    parse_xml content, 'feed > entry' do |entry|
+      image = (entry / 'link[@rel="image"]')
+      related = (entry / 'link[@rel="related"]')
+      {
+        :title => (entry / 'title').inner_text,
+        :image_link => (image.length != 0) ? image.attr('href').value : '',
+        :related_link => (related.length != 0) ? related.attr('href').value : '',
+        :published => Time.parse((entry / 'published').inner_text)
+      }
+    end
+
+action:
+- name: 我说
+  description: 在豆瓣说上发表一条我说
+  http_type: oauth
+  http_method: post
+  in_keys: [content]
+  target: /miniblog/saying
+  header:
+    Content-Type: application/atom+xml
+  body: >
+    post_douban :content => content
+
+- name: 删除我说
+  description: 删除一条我说信息
+  http_type: oauth
+  http_method: delete
+  in_keys: [id]
+  target: /miniblog/#{id}
+  body: >
+    nil

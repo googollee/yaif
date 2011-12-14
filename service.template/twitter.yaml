@@ -1,0 +1,64 @@
+service:
+  name: twitter
+  icon: https://si0.twimg.com/a/1320861875/images/logos/logo_twitter_withbird_1000_white_blue.png
+  description: twitter
+  auth_type: oauth1a
+  auth_data:
+    key: input your twitter consumer key
+    secret: input your twitter consumer secret
+    auth_site: https://api.twitter.com
+    access_site: http://api.twitter.com
+    request_token_source: /oauth/request_token
+    access_token_source: /oauth/access_token
+    authorize_source: /oauth/authorize
+    signature_method: HMAC-SHA1
+    scheme: header
+  helper:
+
+trigger:
+- name: tweets
+  description: users tweets
+  http_type: twitter
+  http_method: get
+  period: */10 * * * *
+  in_keys: []
+  source: /statuses/user_timeline.json
+  out_keys: [text, in_reply_to_user, source]
+  content_to_hash: >
+    parse_json content do |item|
+      {
+        :text => item["text"],
+        :in_reply_to_user => item["in_reply_to_screen_name"],
+        :source => item["source"].gsub(/<.*?>/, ''),
+        :published => Time.parse(item["created_at"])
+      }
+    end
+
+- name: tweets no reply
+  description: users tweets with special tag
+  http_type: twitter
+  http_method: get
+  period: */10 * * * *
+  in_keys: [tag]
+  source: /statuses/user_timeline.json
+  out_keys: [text, source]
+  content_to_hash: >
+    ret = parse_json content do |item|
+      {
+        :text => item["text"],
+        :tags => item["tags"],
+        :source => item["source"].gsub(/<.*?>/, ''),
+        :published => Time.parse(item["created_at"])
+      }
+    end
+    ret.select { |i| i[:tags].include? tag }
+
+action:
+- name: tweet
+  description: send a tweet
+  http_type: twitter
+  http_method: post
+  in_keys: [status]
+  target: /statuses/update.json
+  body: >
+    status
