@@ -11,29 +11,31 @@ trigger:
   description: subscribe a feed
   http_type: direct
   http_method: get
-  period: * */1 * * *
+  period: '* */1 * * *'
   in_keys: [feed]
-  source: \#{feed}
+  source: '#{feed}'
   out_keys: [title, link, content]
   content_to_hash: >
     x = xml(content)
-    if ( (x / 'rss') > 0 )
-      ret = (x / 'rss > channel > item').inject([]) do |item|
+    if ( (x / 'rss').size > 0 )
+      ret = (x / 'rss > channel > item').map do |item|
         {
           :title => (item / 'title').inner_text,
           :content => (item / 'description').inner_text,
           :link => (item / 'link').inner_text,
           :published => Time.parse((item / 'pubDate').inner_text)
         }
+      end
     end
-    if ( (x / 'feed') > 0 )
-      ret = (x / 'feed > entry').inject([]) do |item|
+    if ( (x / 'feed').size > 0 )
+      ret = (x / 'feed > entry').map do |item|
         {
           :title => (item / 'title').inner_text,
           :content => (item / 'content').inner_text,
-          :link => (item / 'link').inner_text,
+          :link => (item / 'link')[0]['href'],
           :published => Time.parse((item / 'updated').inner_text)
         }
+      end
     end
     ret
 
