@@ -37,6 +37,9 @@ describe Service do
                             :secret => "any secret" }
       service = Service.new(@attr)
       service.valid?.should be_true
+
+      service.save
+      service.auth_data.should == @attr[:auth_data]
     end
    end
 

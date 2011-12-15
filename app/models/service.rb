@@ -4,11 +4,18 @@ class Service < ActiveRecord::Base
   validates :icon, :presence => true
   validates :auth_type, :presence => true
 
-  serialize :auth_data, Hash
-
   has_many :triggers
   has_many :actions
   has_many :service_meta_with_user
+
+  def auth_data
+    data = super
+    ActiveSupport::JSON.decode(data).symbolize_keys! rescue nil
+  end
+
+  def auth_data=(data)
+    super data.to_json
+  end
 
   def auth(session, callback_url)
     AuthHelper.send("#{auth_type}_auth", self, session, callback_url)
