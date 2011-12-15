@@ -5,12 +5,14 @@ class ServicesController < ApplicationController
   end
 
   def services_with_trigger
-    @services = Service.where("id IN (SELECT service_id FROM triggers)").to_a
+    # @services = Service.where "id IN (SELECT service_id FROM triggers)"
+    @services = Service.all.select { |s| s.trigger_ids.size > 0 }
     respond_with @services
   end
 
   def services_with_action
-    @services = Service.where("id IN (SELECT service_id FROM actions)").to_a
+    # @services = Service.where "id IN (SELECT service_id FROM actions)"
+    @services = Service.all.select { |s| s.action_ids.size > 0 }
     respond_with @services
   end
 
