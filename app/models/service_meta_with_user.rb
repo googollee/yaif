@@ -4,14 +4,8 @@ class ServiceMetaWithUser < ActiveRecord::Base
   validates :user, :presence => true
   validates :service, :presence => true
 
+  serialize_json :data
+
   belongs_to :service
   belongs_to :user
-
-  def data
-    ActiveSupport::JSON.decode(super).sybmolize_keys! rescue nil
-  end
-
-  def data=(d)
-    super d.to_json
-  end
 end
