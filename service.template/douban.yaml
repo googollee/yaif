@@ -58,7 +58,7 @@ trigger:
       image = (entry / 'link[@rel="image"]')
       related = (entry / 'link[@rel="related"]')
       {
-        :title => (entry / 'title').inner_text,
+        :content => (entry / 'title').inner_text,
         :image_link => (image.length != 0) ? image.attr('href').value : '',
         :related_link => (related.length != 0) ? related.attr('href').value : '',
         :published => Time.parse((entry / 'published').inner_text)
