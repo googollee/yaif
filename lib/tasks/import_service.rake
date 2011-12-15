@@ -21,8 +21,6 @@ namespace :service do
       y[:trigger].each do |t|
         t.symbolize_keys!
         puts "\tImport Trigger: #{t[:name]}..."
-        normalize_array t, :in_keys
-        normalize_array t, :out_keys
         t[:service] = service
         unless trigger = Trigger.find_by_name(t[:name])
           Trigger.create! t
@@ -34,7 +32,6 @@ namespace :service do
       y[:action].each do |a|
         a.symbolize_keys!
         puts "\tImport Action: #{a[:name]}..."
-        normalize_array a, :in_keys
         a[:service] = service
         unless action = Action.find_by_name(a[:name])
           Action.create! a
@@ -44,9 +41,4 @@ namespace :service do
       end rescue nil
     end
   end
-end
-
-def normalize_array(h, sym)
-  h[sym] ||= []
-  h[sym].map! { |i| i.to_sym }
 end
