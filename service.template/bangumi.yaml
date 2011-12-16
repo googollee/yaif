@@ -1,0 +1,27 @@
+service:
+  name: bangumi
+  icon: http://bgm.tv/img/ico/bgm_banner.gif
+  description: bangumi, ACGer
+  auth_type: noauth
+  auth_data:
+  helper:
+
+trigger:
+- name: timeline
+  description: bangumi timeline
+  http_type: direct
+  http_method: get
+  period: '* */1 * * *'
+  in_keys: [user_id]
+  source: http://bangumi.tv/feed/user/#{user_id}/timeline
+  out_keys: [title, link]
+  content_to_hash: >
+    parse_xml content, 'rss > channel > item' do |item|
+      {
+        :title => (item / 'title').inner_text,
+        :link => (item / 'description').inner_text.gsub(/.*<a.*href="(.*?)".*/m, '\1'),
+        :published => Time.parse((item / 'pubDate').inner_text)
+      }
+    end
+
+action:
