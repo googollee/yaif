@@ -13,24 +13,24 @@ Basically, a typical services will have some triggers and actions. For example, 
 Usage
 -----
 
-1. Clone the code and prepare the rails environment.
-2. Copy the ./service.template to ./service
-3. Update the service information in ./service, for example: oauth secret and key. The update information depends on service authentication type.
-4. Run command to import service to database:
+1.  Clone the code and prepare the rails environment.
+2.  Copy the ./service.template to ./service
+3.  Update the service information in ./service, for example: oauth secret and key. The update information depends on service authentication type.
+4.  Run command to import service to database:
 
-    $ rake service:import
+        $ rake service:import
 
-5. Make a invite to your self:
+5.  Make a invite to your self:
 
-    $ rails c
-    irb > u = RegKey.new :email => "user@domain.com"
-    irb > u.save
-    rib > puts u.key
-    db716e8d8          # this output is reg_key, remember it
+        $ rails c
+        irb > u = RegKey.new :email => "user@domain.com"
+        irb > u.save
+        irb > puts u.key
+        db716e8d8          # this output is reg_key, remember it
 
-6. Start your rails server.
-7. Create a new user. Access your site: http://yoursite/signup?reg_key=db716e8d8 . The reg_key is the output of step 5.
-8. Enjoy.
+6.  Start your rails server.
+7.  Create a new user. Access your site: http://yoursite/signup?reg_key=db716e8d8 . The reg_key is the output of step 5.
+8.  Enjoy.
 
 TODO
 ----
