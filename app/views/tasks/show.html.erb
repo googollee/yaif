@@ -6,7 +6,7 @@
 
 <h2>Error:</h2>
 <div id="error">
-  <% if @task.error_log.include? :message %>
+  <% if @task.error_log and @task.error_log.include? :message %>
     <%= @task.error_log[:message] %>
   <% else %>
     No error
