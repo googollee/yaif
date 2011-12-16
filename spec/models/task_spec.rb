@@ -104,10 +104,16 @@ describe Task do
     it "should add run count" do
       @task.run
       @task.reload
-      @task.run_count.should == 1
+      @task.run_count.should == 2
+
+      @task.last_run = 1.day.ago
       @task.run
       @task.reload
-      @task.run_count.should == 2
+      @task.run_count.should == 3
+
+      @task.run
+      @task.reload
+      @task.run_count.should == 3
     end
 
     it "should update last run time" do

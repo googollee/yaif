@@ -43,11 +43,11 @@ class Task < ActiveRecord::Base
       @last_run = last_run
       filter_items get_from_trigger do |i|
         send_to_action i
+        self.run_count += 1
       end
     rescue Exception => e
       self.error_log = { :message => e.message, :backtrace => e.backtrace }
     end
-    self.run_count += 1
     self.last_run = @last_run || Time.now
     save
   end
