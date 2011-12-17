@@ -4,9 +4,9 @@ class Task < ActiveRecord::Base
   validates :trigger, :presence => true
   validates :action, :presence => true
 
-  serialize_json :trigger_params, :symbolize => false
-  serialize_json :action_params, :symbolize => false
-  serialize_json :error_log
+  serialize :trigger_params, SymbolHashJSONCoder.new
+  serialize :action_params, SymbolHashJSONCoder.new
+  serialize :error_log, SymbolHashJSONCoder.new
 
   belongs_to :user
   belongs_to :trigger

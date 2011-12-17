@@ -7,8 +7,8 @@ class Action < ActiveRecord::Base
 
   validates :service, :presence => true
 
-  serialize_json :in_keys, :symbolize => false
-  serialize_json :header, :symbolize => false
+  serialize :in_keys, JSONCoder.new([])
+  serialize :header, JSONCoder.new({})
 
   belongs_to :service
 

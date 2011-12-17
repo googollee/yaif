@@ -4,7 +4,7 @@ class Service < ActiveRecord::Base
   validates :icon, :presence => true
   validates :auth_type, :presence => true
 
-  serialize_json :auth_data
+  serialize :auth_data, SymbolHashJSONCoder.new
 
   has_many :triggers
   has_many :actions

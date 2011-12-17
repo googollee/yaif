@@ -4,7 +4,7 @@ class ServiceMetaWithUser < ActiveRecord::Base
   validates :user, :presence => true
   validates :service, :presence => true
 
-  serialize_json :data
+  serialize :data, SymbolHashJSONCoder.new
 
   belongs_to :service
   belongs_to :user
