@@ -3,12 +3,17 @@ class TriggersController < ApplicationController
 
   def index
     @service = Service.find(params[:service_id])
-    if @service.meta(current_user)
-      @triggers = @service.triggers
-      respond_with @triggers
-    else
-      render 'triggers/service_auth'
+    unless @service.meta(current_user)
+      auth_url = @service.auth session, auth_callback_service_url(@service)
+      if auth_url
+        render 'triggers/service_auth'
+        return
+      end
+      @service.auth_meta current_user, session
     end
+
+    @triggers = @service.triggers
+    respond_with @triggers
   end
 
   def show_crontab

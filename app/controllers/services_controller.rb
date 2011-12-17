@@ -16,11 +16,6 @@ class ServicesController < ApplicationController
 
   def auth
     @service = Service.find(params[:id])
-    meta = @service.meta current_user
-    if not meta
-      auth_url = @service.auth(session, auth_callback_service_url(@service))
-    end
-    render 'services/no_auth' if meta or (not auth_url)
   end
 
   def redirect_to_auth_url
