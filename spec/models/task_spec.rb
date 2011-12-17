@@ -101,6 +101,30 @@ describe Task do
       end
     end
 
+    it "should filter with asc order" do
+      content = [
+        {:title => "1", :published => 2.day.ago},
+        {:title => "2", :published => 1.minute.ago},
+      ]
+      order = [ "1", "2" ]
+      i = 0
+      @task.filter_items content do |item|
+        item[:title].should == order[i]
+        i += 1
+      end
+
+      content = [
+        {:title => "2", :published => 1.minute.ago},
+        {:title => "1", :published => 2.day.ago},
+      ]
+      order = [ "1", "2" ]
+      i = 0
+      @task.filter_items content do |item|
+        item[:title].should == order[i]
+        i += 1
+      end
+    end
+
     it "should add run count" do
       @task.run
       @task.reload

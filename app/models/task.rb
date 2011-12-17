@@ -22,7 +22,8 @@ class Task < ActiveRecord::Base
   end
 
   def filter_items(items)
-    items.each do |i|
+    items_order = items.sort { |a, b| a[:published] <=> b[:published] }
+    items_order.each do |i|
       yield i unless last_run && i[:published] && (i[:published] <= last_run)
       @last_run = i[:published] unless @last_run && i[:published] && (i[:published] <= @last_run)
     end
