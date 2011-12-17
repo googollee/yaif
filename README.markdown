@@ -35,8 +35,7 @@ Usage
 TODO
 ----
 
-1. Clear the serialize of model attributes. Because heroku can't unserialize data with yaml correctly, I use custom JSON to do it. Need change to the way of ActiveRecord.
-2. Maybe need change the Service information from database to ruby code. Seems let user add new service is not a good idea. So saving them in database is nothing benefit.
-3. More service………
-4. Use icon in same size.
-5. Make some css. (I'm lazy…)
+1. Maybe need change the Service information from database to ruby code. Seems let user add new service is not a good idea. So saving them in database is nothing benefit.
+2. More service………
+3. Use icon in same size.
+4. Make some css. (I'm lazy…)
