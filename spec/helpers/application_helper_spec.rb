@@ -29,3 +29,18 @@ describe "SymbolHashJSONCoder" do
     @coder.load(@coder.dump(@data)).should == @data
   end
 end
+
+describe "SymbolArrayJSONCoder" do
+  before :each do
+    @coder = SymbolArrayJSONCoder.new
+    @data = [:a, :b, :c]
+  end
+
+  it "should dump to json" do
+    @coder.dump(@data).class.should == "String".class
+  end
+
+  it "should reload to same object" do
+    @coder.load(@coder.dump(@data)).should == @data
+  end
+end

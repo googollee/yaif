@@ -8,9 +8,9 @@ class Trigger < ActiveRecord::Base
 
   validates :service, :presence => true
 
-  serialize :in_keys, JSONCoder.new([])
+  serialize :in_keys, SymbolArrayJSONCoder.new
   serialize :header, JSONCoder.new({})
-  serialize :out_keys, JSONCoder.new([])
+  serialize :out_keys, SymbolArrayJSONCoder.new
 
   belongs_to :service
 

@@ -16,6 +16,12 @@ class JSONCoder
   end
 end
 
+class SymbolArrayJSONCoder < JSONCoder
+  def load(s)
+    super(s).map { |i| i.to_sym }
+  end
+end
+
 class SymbolHashJSONCoder < JSONCoder
   def initialize
     super({})

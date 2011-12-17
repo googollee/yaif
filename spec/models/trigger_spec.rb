@@ -109,11 +109,8 @@ describe Trigger do
       ret.should == $entries.to_json
     end
 
-    it "should support both symbol and string in get params" do
+    it "should support symbol in get params" do
       ret = @trigger.get_body @user, :user_id => 123
-      $uri.should == 'http://test/trigger/123'
-
-      ret = @trigger.get_body @user, "user_id" => 123
       $uri.should == 'http://test/trigger/123'
     end
 
