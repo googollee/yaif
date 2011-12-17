@@ -29,7 +29,7 @@ Usage
         db716e8d8          # this output is reg_key, remember it
 
 6.  Start your rails server.
-7.  Create a new user. Access your site: http://yoursite/signup?reg_key=db716e8d8 . The reg_key is the output of step 5.
+7.  Create a new user. Access your site: http://yoursite/signup?reg\_key=db716e8d8 . The reg\_key is the output of step 5.
 8.  Enjoy.
 
 TODO
