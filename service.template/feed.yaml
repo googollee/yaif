@@ -17,6 +17,7 @@ trigger:
   out_keys: [title, link, content]
   content_to_hash: >
     x = xml(content)
+
     if ( (x / 'rss').size > 0 )
       ret = (x / 'rss > channel > item').map do |item|
         {
@@ -27,6 +28,7 @@ trigger:
         }
       end
     end
+
     if ( (x / 'feed').size > 0 )
       ret = (x / 'feed > entry').map do |item|
         {
@@ -37,6 +39,7 @@ trigger:
         }
       end
     end
+
     ret
 
 action:
