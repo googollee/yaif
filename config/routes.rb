@@ -19,7 +19,7 @@ Yaif::Application.routes.draw do
   match '/services_with_action', :to => 'services#services_with_action'
 
   match '/crontab', :to => 'triggers#show_crontab', :format => :text
-  match '/trigger', :to => 'triggers#trigger'
+  match '/trigger', :to => 'triggers#trigger', :format => :text
 
   match '/signup', :to => 'users#new'
   match '/signin', :to => 'sessions#new'
