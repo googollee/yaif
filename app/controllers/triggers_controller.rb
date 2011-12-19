@@ -1,5 +1,6 @@
 class TriggersController < ApplicationController
   respond_to :html, :js
+  respond_to :text, :only => [:show_crontab, :trigger]
 
   def index
     @service = Service.find(params[:service_id])
