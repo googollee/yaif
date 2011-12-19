@@ -26,7 +26,6 @@ class TasksController < ApplicationController
   end
 
   def update
-    puts params[:task]
     @task = Task.find params[:id]
     if @task.update_attributes(params[:task])
       flash[:success] = "Task updated."
