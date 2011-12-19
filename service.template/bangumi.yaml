@@ -11,7 +11,7 @@ trigger:
   description: bangumi timeline
   http_type: direct
   http_method: get
-  period: '* */1 * * *'
+  period: '0 */1 * * *'
   in_keys: [user_id]
   source: http://bangumi.tv/feed/user/#{user_id}/timeline
   out_keys: [title, link]

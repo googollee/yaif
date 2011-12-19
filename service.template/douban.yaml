@@ -31,7 +31,7 @@ trigger:
   description: 个人在豆瓣的更新信息
   http_type: direct
   http_method: get
-  period: "*/10 * * * *"
+  period: "0 */1 * * *"
   in_keys: [name]
   source: http://www.douban.com/feed/people/#{name}/interests
   out_keys: [title, level, tags, comment, link]

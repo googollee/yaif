@@ -11,7 +11,7 @@ trigger:
   description: subscribe a feed
   http_type: direct
   http_method: get
-  period: '* */1 * * *'
+  period: '0 */1 * * *'
   in_keys: [feed]
   source: '#{feed}'
   out_keys: [title, link, content]

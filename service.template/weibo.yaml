@@ -20,7 +20,7 @@ trigger:
   description: 自己发布的微博
   http_type: oauth1a
   http_method: get
-  period: */10 * * * *
+  period: "*/10 * * * *"
   in_keys: []
   source: /statuses/user_timeline.json
   out_keys: [text, in_reply_to_user, source]
