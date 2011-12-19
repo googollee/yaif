@@ -19,11 +19,8 @@ class TriggersController < ApplicationController
 
   def show_crontab
     @periods = Trigger.all.inject({}) do |o, t|
-      period = t.period
-      o[period] = 1 unless o.include? period
-      o
+      o.merge! t.period => 1
     end.keys
-    puts @periods
     respond_with @periods
   end
 
