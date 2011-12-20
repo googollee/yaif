@@ -126,6 +126,8 @@ describe Task do
     end
 
     it "should add run count" do
+      @task.last_run = 3.days.ago
+
       @task.run
       @task.reload
       @task.run_count.should == 2
@@ -213,6 +215,7 @@ EOF
 
     it "should do action" do
       @task = Task.create!(@attr)
+      @task.last_run = 1.day.ago
       @task.run
 
       $method.should == :post

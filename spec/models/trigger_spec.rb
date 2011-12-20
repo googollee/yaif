@@ -24,7 +24,7 @@ describe Trigger do
                 json = ActiveSupport::JSON.decode(content)
                 json.each.inject([]) do |o, i|
                   o << { :title => i["title"],
-                         :updated => Time.parse(i["updated"]),
+                         :published => Time.parse(i["updated"]),
                          :link => i["link"],
                          :id => user_id }
                 end
@@ -125,7 +125,7 @@ describe Trigger do
       5.times do |n|
         ret[n][:title].should == $entries[n][:title]
         ret[n][:link].should == $entries[n][:link]
-        ret[n][:updated].should == Time.parse($entries[n][:updated])
+        ret[n][:published].should == Time.parse($entries[n][:updated])
         ret[n][:id].should == 123
       end
     end
@@ -139,10 +139,10 @@ describe Trigger do
                      :service => service,
                      :user => @user,
                      :data => {})
-      @attr[:content_to_hash] = "test_helper(1)"
+      @attr[:content_to_hash] = "[ { :title => test_helper(1) } ]"
       @attr[:service] = service
       @trigger = Trigger.new(@attr)
-      @trigger.get(@user, { :user_id => "123" }).should == "1"
+      @trigger.get(@user, { :user_id => "123" })[0][:title].should == "1"
     end
 
     it "should raise error when no meta" do
@@ -152,6 +152,22 @@ describe Trigger do
       lambda do
         @trigger.get(@user, {})
       end.should raise_error
+    end
+
+    it "should add time now if no published attribute in items" do
+      @attr[:content_to_hash] = '
+        require "time"
+        json = ActiveSupport::JSON.decode(content)
+        json.each.inject([]) do |o, i|
+          o << { :title => i["title"],
+                 :link => i["link"],
+                 :id => user_id }
+        end'
+      @trigger = Trigger.new(@attr)
+      data = @trigger.get(@user, { :user_id => "123" })
+      data.each do |d|
+        d.include?(:published).should be_true
+      end
     end
   end
 end

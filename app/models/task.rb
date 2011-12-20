@@ -19,37 +19,42 @@ class Task < ActiveRecord::Base
 
   def get_from_trigger
     trigger.get user, trigger_params
+  rescue Exception => e
+    self.error_log = { :message => "#{e.message} when get content from trigger", :backtrace => e.backtrace }
   end
 
   def filter_items(items)
-    items_order = items.sort { |a, b| a[:published] <=> b[:published] }
-    items_order.each do |i|
-      yield i unless last_run && i[:published] && (i[:published] <= last_run)
-      @last_run = i[:published] unless @last_run && i[:published] && (i[:published] <= @last_run)
+    items_ordered = items.sort { |a, b| a[:published] <=> b[:published] }
+    items_ordered.each do |i|
+      yield i if item_published_after_last_run(i)
     end
   end
 
   def send_to_action(item)
-    rt ||= RuntimeHelper::InnerRuntime.new
-    rt.add_params item
-    params = action.in_keys.inject({}) do |o, k|
-      o.merge! k => (rt.eval "\"#{action_params[k]}\"")
-    end
-    action.send_request user, params
+    action.send_request user, get_params(item)
+    self.run_count += 1
+  rescue Exception => e
+    self.error_log = { :message => "#{e.message} when send to action", :backtrace => e.backtrace }
   end
 
   def run
-    begin
-      self.error_log = {}
-      @last_run = last_run
-      filter_items get_from_trigger do |i|
-        send_to_action i
-        self.run_count += 1
-      end
-    rescue Exception => e
-      self.error_log = { :message => e.message, :backtrace => e.backtrace }
-    end
-    self.last_run = @last_run || Time.now
+    self.error_log = {}
+    items = get_from_trigger
+    filter_items(items) { |i| send_to_action i } unless error_log.include? :message
     save
+  end
+
+  private
+
+  def item_published_after_last_run(item)
+    self.last_run ||= Time.now
+    return self.last_run = item[:published] if item[:published] > last_run
+    nil
+  end
+
+  def get_params(item)
+    rt = RuntimeHelper::InnerRuntime.new
+    rt.add_params item
+    action.in_keys.inject({}) { |o, k| o.merge! k => (rt.eval "\"#{action_params[k]}\"") }
   end
 end

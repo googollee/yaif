@@ -25,7 +25,9 @@ class Trigger < ActiveRecord::Base
 
   def get(user, params)
     get_body user, params
-    @runtime.eval content_to_hash
+    ret = @runtime.eval content_to_hash
+    ret.map { |d| d[:published] = Time.now unless d.include? :published }
+    ret
   end
 
   private
