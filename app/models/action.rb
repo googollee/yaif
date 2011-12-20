@@ -16,7 +16,7 @@ class Action < ActiveRecord::Base
 
   def send_request(user, params)
     init_env user, params
-    RequestHelper.send "#{http_type}_request".to_sym, http_method.to_sym, uri, body_, meta
+    RequestHelper.send "#{http_type}_request".to_sym, http_method.to_sym, uri, body_, meta if body_ != ''
   end
 
   private
@@ -31,7 +31,7 @@ class Action < ActiveRecord::Base
   end
 
   def body_
-    @runtime.eval body
+    @runtime.eval(body).strip
   end
 
   def meta

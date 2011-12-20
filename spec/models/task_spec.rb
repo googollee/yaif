@@ -209,10 +209,10 @@ EOF
         end
       end
 
-      @task = Task.create!(@attr)
     end
 
     it "should do action" do
+      @task = Task.create!(@attr)
       @task.run
 
       $method.should == :post
