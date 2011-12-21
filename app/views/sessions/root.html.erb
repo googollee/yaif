@@ -5,9 +5,10 @@
     <% current_user.tasks.each do |t| %>
       <li>
         <%= render 'tasks/brief', :object => t %>
-        <div class="task-last-run">Last run at <%= t.last_run %></div>
-        <div class="task-run-count">Total run <%= t.run_count %> time(s)</div>
-        <%= link_to "Show Detail", t, :class => "task-detail-button button" %>
+        <div class="task_last_run">Last run at <%= t.last_run %></div>
+        <div class="task_run_count">Total run <%= t.run_count %> time(s)</div>
+        <%= render 'tasks/error', :task => t %>
+        <%= link_to "Show Detail", t, :class => "task_detail_button button" %>
       </li>
     <% end %>
   </ul>

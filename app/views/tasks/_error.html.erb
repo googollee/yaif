@@ -1,0 +1,7 @@
+<div id="task_last_error">
+  <% if task.error_log and task.error_log.include? :message %>
+    <%= task.error_log[:message] %>
+  <% else %>
+    No error
+  <% end %>
+</div>

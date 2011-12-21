@@ -48,6 +48,7 @@ class Task < ActiveRecord::Base
 
   def item_published_after_last_run(item)
     self.last_run ||= Time.now
+    item[:published] ||= Time.now
     return self.last_run = item[:published] if item[:published] > last_run
     nil
   end
