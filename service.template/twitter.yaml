@@ -1,6 +1,6 @@
 service:
   name: twitter
-  icon: https://si0.twimg.com/a/1320861875/images/logos/logo_twitter_withbird_1000_white_blue.png
+  icon: http://a2.twimg.com/a/1324402008/images/logos/twitter_newbird_boxed_blueonwhite.png
   description: twitter
   auth_type: oauth1a
   auth_data:
