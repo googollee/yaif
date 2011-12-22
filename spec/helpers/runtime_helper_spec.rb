@@ -64,5 +64,11 @@ EOF
       rt.grab_text(str, /<abc>tag: (.*?)</m).should == "content"
       rt.grab_text(str, /<123>tag: (.*?)</m).should == ""
     end
+
+    it "should unescape xml string" do
+      rt = InnerRuntime.new
+      str = CGI::escape("<abc>")
+      rt.xml_unescape(str).should == "<abc>"
+    end
   end
 end
