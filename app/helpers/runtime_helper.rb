@@ -39,6 +39,12 @@ module RuntimeHelper
         o << (yield i)
       end
     end
+
+    def grab_text(str, pattern)
+      str.match(pattern)[1]
+    rescue
+      ''
+    end
   end
 
   def init_env(obj)

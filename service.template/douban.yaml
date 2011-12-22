@@ -26,10 +26,6 @@ service:
       ret += "</entry>"
     end
 
-    def sub_string_or_empty(str, pattern, replace)
-      (str =~ pattern) ? str.sub(pattern, replace) : ''
-    end
-
 trigger:
 - name: 个人信息
   description: 个人在豆瓣的更新信息
@@ -44,9 +40,9 @@ trigger:
       desc = (item / 'description').inner_text
       {
         :title => (item / 'title').inner_text,
-        :level => sub_string_or_empty(desc, /^.*<p>推荐: (.*?)<.*$/m, '\1'),
-        :tags => sub_string_or_empty(desc, /^.*<p>标签: (.*?)<.*$/m, '\1'),
-        :comment => sub_string_or_empty(desc, /^.*<p>备注: (.*?)<.*$/m, '\1'),
+        :level => grab_text(desc, /<p>推荐: (.*?)</m),
+        :tags => grab_text(desc, /<p>标签: (.*?)</m),
+        :comment => grab_text(desc, /<p>备注: (.*?)</m),
         :link => (item / 'link').inner_text,
         :published => Time.parse((item / 'pubDate').inner_text)
       }

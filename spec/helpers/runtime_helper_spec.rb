@@ -57,5 +57,12 @@ EOF
       end
       ret.should == [{:title => "item1"}, {:title => "item2"}, {:title => "item3"}]
     end
+
+    it "should grab text" do
+      rt = InnerRuntime.new
+      str = "<abc>tag: content</abc>"
+      rt.grab_text(str, /<abc>tag: (.*?)</m).should == "content"
+      rt.grab_text(str, /<123>tag: (.*?)</m).should == ""
+    end
   end
 end
