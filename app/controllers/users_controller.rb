@@ -60,4 +60,3 @@ class UsersController < ApplicationController
     redirect_to signup_url(:protocol => 'https') unless request.protocol =~ /^https:/
   end
 end
-end
