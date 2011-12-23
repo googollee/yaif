@@ -21,11 +21,9 @@ Yaif::Application.routes.draw do
   match '/crontab', :to => 'triggers#show_crontab', :format => :text
   match '/trigger', :to => 'triggers#trigger', :format => :text
 
-  scope :constraints => { :protocol => 'https' } do
-    match '/signup', :to => 'users#new'
-    match '/signin', :to => 'sessions#new'
-    match '/signout', :to => 'sessions#destroy'
-  end
+  match '/signup', :to => 'users#new'
+  match '/signin', :to => 'sessions#new'
+  match '/signout', :to => 'sessions#destroy'
 
   root :to => 'sessions#root'
 end
