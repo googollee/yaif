@@ -26,6 +26,6 @@ class SessionsController < ApplicationController
   private
 
   def check_ssl
-    redirect_to signin_url(:protocol => 'https') unlesss request.protocol =~ /^https:/
+    redirect_to signin_url(:protocol => 'https') unless request.protocol =~ /^https:/
   end
 end

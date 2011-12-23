@@ -57,7 +57,7 @@ class UsersController < ApplicationController
   end
 
   def check_ssl
-    redirect_to signup_url(:protocol => 'https') unlesss request.protocol =~ /^https:/
+    redirect_to signup_url(:protocol => 'https') unless request.protocol =~ /^https:/
   end
 end
 end
