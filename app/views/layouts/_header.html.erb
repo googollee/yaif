@@ -5,10 +5,10 @@
       <% if current_user %>
         <li><%= link_to "Profile", edit_user_path(current_user) %></li>
         <li><%= link_to "Task", new_task_path %></li>
-        <li><%= link_to "Sign out", signout_path %></li>
+        <li><%= link_to "Sign out", signout_url(:protocol => 'https') %></li>
       <% else %>
-        <li><%= link_to "Sign in", signin_path %></li>
-        <li><%= link_to "Sign up", signup_path %></li>
+        <li><%= link_to "Sign in", signin_url(:protocol => 'https') %></li>
+        <li><%= link_to "Sign up", signup_url(:protocol => 'https') %></li>
       <% end %>
     </ul>
   </div>
