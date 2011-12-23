@@ -9,7 +9,7 @@ class UsersController < ApplicationController
       @user = User.new :name => key.email.split("@")[0], :email => key.email
     else
       flash[:error] = "reg_key #{params[:reg_key]} is invalid."
-      redirect_to root_url
+      redirect_to root_url(:protocol => 'http')
     end
   end
 
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
       key.mark_used
       sign_in @user
       flash[:success] = "Welcome to Yet Another IFttt!"
-      redirect_to root_url
+      redirect_to root_url(:protocol => 'http')
     else
       @user.password = @user.password_confirmation = ''
       render 'new'
