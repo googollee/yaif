@@ -1,3 +1,29 @@
 // Place all the styles related to the tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.task-brief {
+  font-size: 18px;
+
+  .task-desc {
+    $height: 91px;
+    height: $height;
+
+    > div {
+      float: left;
+    }
+
+    .icon {
+      height: 64px;
+    }
+
+    .task-pointer {
+      line-height: $height;
+      margin: 0 10px 0 10px;
+    }
+
+    .name {
+      text-align: center;
+    }
+  }
+}

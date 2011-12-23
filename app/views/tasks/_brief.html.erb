@@ -1,13 +1,15 @@
 <div class="task-brief">
-  <div class="task-trigger">
-    <image class="task-trigger-icon icon" src="<%= object.trigger.service.icon %>" />
-    <p class="task-trigger-name name"><%= object.trigger.name %></p>
-  </div>
-  <div class="task-pointer">
-    --&gt;
-  </div>
-  <div class="task-action">
-    <image class="task-action-icon icon" src="<%= object.action.service.icon %>" />
-    <p class="task-action-name name"><%= object.action.name %></p>
+  <div class="task-desc">
+    <div class="task-trigger">
+      <image class="task-trigger-icon icon" src="<%= object.trigger.service.icon %>" />
+      <div class="task-trigger-name name"><%= object.trigger.name %></div>
+    </div>
+    <div class="task-pointer">
+      --&gt;
+    </div>
+    <div class="task-action">
+      <image class="task-action-icon icon" src="<%= object.action.service.icon %>" />
+      <div class="task-action-name name"><%= object.action.name %></div>
+    </div>
   </div>
 </div>

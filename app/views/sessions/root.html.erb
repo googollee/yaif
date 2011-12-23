@@ -1,14 +1,19 @@
 <% if current_user %>
   <h1>Hello, <%= current_user.name %></h1>
   <h1>Tasks:</h1>
-  <ul>
-    <% current_user.tasks.each do |t| %>
-      <li>
+  <ul class='root-list list'>
+    <% current_user.tasks.sort { |a, b| a.name <=> b.name }.each do |t| %>
+      <li class="task-item item <%= cycle 'item-odd', 'item-even' %>">
+        <div class="task-name">
+          <%= t.name %>
+        </div>
         <%= render 'tasks/brief', :object => t %>
-        <div class="task_last_run">Last run at <%= t.last_run %></div>
-        <div class="task_run_count">Total run <%= t.run_count %> time(s)</div>
-        <%= render 'tasks/error', :task => t %>
-        <%= link_to "Show Detail", t, :class => "task_detail_button button" %>
+        <div class="task-status">
+          <div class="task_last_run">Last run at <%= t.last_run %></div>
+          <div class="task_run_count">Total run <%= t.run_count %> time(s)</div>
+          <%= render 'tasks/error', :task => t %>
+          <%= link_to "Show Detail", t, :class => "task_detail_button button" %>
+        </div>
       </li>
     <% end %>
   </ul>
