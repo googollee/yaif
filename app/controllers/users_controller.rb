@@ -8,7 +8,7 @@ class UsersController < ApplicationController
       @user = User.new :name => key.email.split("@")[0], :email => key.email
     else
       flash[:error] = "reg_key #{params[:reg_key]} is invalid."
-      redirect_to root_path
+      redirect_to root_url
     end
   end
 
@@ -16,14 +16,14 @@ class UsersController < ApplicationController
     key = RegKey.get_validate_by_email params[:user][:email]
     unless key
       flash[:error] = "#{params[:user][:email]} doesn't be invited."
-      redirect_to root
+      redirect_to root_url
     end
     @user = User.new(params[:user])
     if @user.save
       key.mark_used
       sign_in @user
       flash[:success] = "Welcome to Yet Another IFttt!"
-      redirect_to root_path
+      redirect_to root_url
     else
       @user.password = @user.password_confirmation = ''
       render 'new'
