@@ -1,6 +1,6 @@
 <h1>Sign in</h1>
 
-<%= form_for(:session, :url => sessions_url(:protocol => 'https')) do |f| %>
+<%= form_for(:session, :url => sessions_path) do |f| %>
   <div class='field'>
     <%= f.label :email %><br />
     <%= f.text_field :email %>
@@ -14,4 +14,4 @@
   </div>
 <% end %>
 
-<p>New user? <%= link_to "Sign up now!", signup_url(:protocol => 'https') %></p>
+<p>New user? <%= link_to "Sign up now!", signup_path %></p>
