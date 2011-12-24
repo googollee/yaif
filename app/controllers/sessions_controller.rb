@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_filter :check_ssl, :only => [:new, :create]
+  before_filter :must_ssl, :only => [:new, :create]
 
   def root
   end
@@ -21,11 +21,5 @@ class SessionsController < ApplicationController
   def destroy
     sign_out
     redirect_to root_path
-  end
-
-  private
-
-  def check_ssl
-    redirect_to signin_url(:protocol => 'https') unless request.protocol =~ /^https:/
   end
 end

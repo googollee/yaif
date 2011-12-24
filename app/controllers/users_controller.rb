@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :check_ssl, :only => [:new, :create]
+  before_filter :must_ssl, :only => [:new, :create]
   before_filter :correct_user, :only => [:edit, :update]
   before_filter :not_sign_in, :only => [:new, :create]
 
@@ -54,9 +54,5 @@ class UsersController < ApplicationController
 
   def not_sign_in
     redirect_to root_path if signed_in?
-  end
-
-  def check_ssl
-    redirect_to signup_url(:protocol => 'https') unless request.protocol =~ /^https:/
   end
 end

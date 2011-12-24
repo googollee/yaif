@@ -58,4 +58,8 @@ module SessionsHelper
   def clear_return_to
     session[:return_to] = nil
   end
+
+  def must_ssl
+    redirect_to "https://#{request.host_with_port}#{request.fullpath}" unless not Rails.env.production? or request.protocol =~ /^https:/
+  end
 end
