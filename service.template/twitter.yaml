@@ -34,24 +34,26 @@ trigger:
       }
     end
 
-- name: tweets no reply
-  description: users tweets with special tag
+- name: tweets with special tags
+  description: users tweets with special tags
   http_type: twitter
   http_method: get
   period: "*/10 * * * *"
-  in_keys: [tag]
+  in_keys: [tags]
   source: /statuses/user_timeline.json
   out_keys: [text, source]
   content_to_hash: >
+    tags_pattern = Regexp.new "\#(#{tags.split(/[ ,]+/).join('|')}) "
+
     ret = parse_json content do |item|
       {
         :text => item["text"],
-        :tags => item["tags"],
         :source => item["source"].gsub(/<.*?>/, ''),
         :published => Time.parse(item["created_at"])
       }
     end
-    ret.select { |i| i[:tags].include? tag }
+
+    ret.select { |i| i[:text].match tags_pattern }
 
 action:
 - name: tweet
