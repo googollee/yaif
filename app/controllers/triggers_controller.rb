@@ -3,8 +3,6 @@ class TriggersController < ApplicationController
                                :password => Rails.configuration.basic_auth_password,
                                :only => [:show_crontab, :trigger]
 
-  before_filter :must_ssl, :only => [:showtab, :trigger]
-
   respond_to :html, :js
   respond_to :text, :only => [:show_crontab, :trigger]
 
