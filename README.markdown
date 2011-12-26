@@ -31,10 +31,10 @@ Usage
         irb > u = RegKey.new :email => "user@domain.com"
         irb > u.save
         irb > puts u.key
-        db716e8d8          # this output is reg_key, remember it
+        db716e8d8          # this output depend on your computer, only example here
 
 7.  Start your rails server.
-8.  Create a new user. Access your site: http://yoursite/signup?reg\_key=db716e8d8 . The reg\_key is the output of step 5.
+8.  Create a new user. Access your site: http://yoursite/signup?reg\_key=db716e8d8 . The reg\_key is the output of step 6.
 9.  Access http://yoursite/crontab with username/password set at step 5. Add lines to your cron to trigger tasks interval.
 10.  Enjoy.
 
