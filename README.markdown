@@ -20,7 +20,12 @@ Usage
 
         $ rake service:import
 
-5.  Make a invite to your self:
+5.  Open config/application.rb and change below username/password:
+
+        config.basic_auth_username = 'username'
+        config.basic_auth_password = 'password'
+
+6.  Make a invite to your self:
 
         $ rails c
         irb > u = RegKey.new :email => "user@domain.com"
@@ -28,10 +33,10 @@ Usage
         irb > puts u.key
         db716e8d8          # this output is reg_key, remember it
 
-6.  Start your rails server.
-7.  Create a new user. Access your site: http://yoursite/signup?reg\_key=db716e8d8 . The reg\_key is the output of step 5.
-8.  Access http://yoursite/crontab and add lines to your cron to trigger tasks interval.
-9.  Enjoy.
+7.  Start your rails server.
+8.  Create a new user. Access your site: http://yoursite/signup?reg\_key=db716e8d8 . The reg\_key is the output of step 5.
+9.  Access http://yoursite/crontab with username/password set at step 5. Add lines to your cron to trigger tasks interval.
+10.  Enjoy.
 
 TODO
 ----
