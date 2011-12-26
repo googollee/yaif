@@ -46,5 +46,9 @@ module Yaif
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Basic Authentication's username and password
+    config.basic_auth_username = 'username'
+    config.basic_auth_password = 'password'
   end
 end

@@ -1,4 +1,10 @@
 class TriggersController < ApplicationController
+  http_basic_authenticate_with :name => Rails.configuration.basic_auth_username,
+                               :password => Rails.configuration.basic_auth_password,
+                               :only => [:show_crontab, :trigger]
+
+  before_filter :must_ssl, :only => [:showtab, :trigger]
+
   respond_to :html, :js
   respond_to :text, :only => [:show_crontab, :trigger]
 
