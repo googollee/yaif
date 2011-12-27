@@ -20,7 +20,6 @@ gem 'gravatar_image_tag'
 gem 'will_paginate'
 gem 'oauth'
 gem 'nokogiri'
-gem 'twitter'
 
 # Use unicorn as the web server
 # gem 'unicorn'

@@ -31,7 +31,7 @@ class Action < ActiveRecord::Base
   end
 
   def body_
-    @runtime.eval(body).strip
+    @runtime.eval(body)
   end
 
   def meta

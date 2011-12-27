@@ -122,10 +122,5 @@ describe Action do
       @action.send_request @user, { :updated => Time.now, :id => '123', :content => '' }
       $body.should == 'not run'
     end
-
-    it "should strip space content" do
-      @action.send_request @user, { :updated => Time.now, :id => '123', :content => "\t  123 \t " }
-      $body.should == '123'
-    end
  end
 end
