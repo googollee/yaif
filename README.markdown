@@ -41,7 +41,7 @@ Usage
 TODO
 ----
 
-1. Maybe need change the Service information from database to ruby code. Seems let user add new service is not a good idea. So saving them in database is nothing benefit.
-2. More service………
-3. Use icon in same size.
+1. More service... (mail/weibo/instagram/...)
+2. Make normal http login request. (It ought to save user's password directly. Is it OK?)
+3. Is it nessessary to connect one trigger and many actions in one task?
 4. Make some css. (I'm lazy…)

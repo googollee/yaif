@@ -1,2 +1,0 @@
-- Need to catch exception when task run and save the failed info.
-  If fail one item, should stop all items processing?
