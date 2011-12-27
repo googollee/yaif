@@ -18,7 +18,7 @@ service:
 trigger:
 - name: tweets
   description: users tweets
-  http_type: twitter
+  http_type: oauth
   http_method: get
   period: "*/10 * * * *"
   in_keys: []
@@ -36,7 +36,7 @@ trigger:
 
 - name: tweets with special tags
   description: users tweets with special tags
-  http_type: twitter
+  http_type: oauth
   http_method: get
   period: "*/10 * * * *"
   in_keys: [tags]
@@ -58,9 +58,9 @@ trigger:
 action:
 - name: tweet
   description: send a tweet
-  http_type: twitter
+  http_type: oauth
   http_method: post
   in_keys: [status]
   target: /statuses/update.json
   body: >
-    status
+    { :status => status.strip }
