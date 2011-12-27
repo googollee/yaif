@@ -2,10 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.task-brief {
+.task_brief {
   font-size: 18px;
 
-  .task-desc {
+  .task_desc {
     $height: 91px;
     height: $height;
 
@@ -17,7 +17,7 @@
       height: 64px;
     }
 
-    .task-pointer {
+    .task_pointer {
       line-height: $height;
       margin: 0 10px 0 10px;
     }
@@ -25,5 +25,11 @@
     .name {
       text-align: center;
     }
+  }
+}
+
+.class_last_error {
+  .warning {
+    color: red;
   }
 }

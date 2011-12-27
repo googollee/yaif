@@ -1,6 +1,6 @@
-<div id="task_last_error">
+<div class="task_last_error">
   <% if task.error_log and task.error_log.include? :message %>
-    <%= task.error_log[:message] %>
+    <span class="warning"><%= task.error_log[:message] %></span>
   <% else %>
     No error
   <% end %>
