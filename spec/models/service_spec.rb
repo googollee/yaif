@@ -80,7 +80,7 @@ describe Service do
           "#{$auth_url}?callback=#{callback_url}"
         end
 
-        def test_get_meta(service, session)
+        def test_get_meta(service, session, params)
           { :pass => "foobar", :auth => service.auth_data[:auth] }
         end
       end
@@ -96,30 +96,30 @@ describe Service do
 
     it "should save meta data" do
       lambda do
-        @service.auth_meta @user, {}
+        @service.auth_meta @user, {}, {}
       end.should change(ServiceMetaWithUser, :count).by(1)
     end
 
     it "should get meta data" do
-      @service.auth_meta @user, {}
+      @service.auth_meta @user, {}, {}
       meta = @service.meta @user
       meta[:auth].should == @service.auth_data[:auth]
       meta[:pass].should == "foobar"
     end
 
     it "should replace meta data" do
-      @service.auth_meta @user, {}
+      @service.auth_meta @user, {}, {}
       @service.meta(@user)[:pass].should == "foobar"
 
       module AuthHelper
         extend self
-        def test_get_meta(service, session)
+        def test_get_meta(service, session, params)
           { :pass => "foo" }
         end
       end
 
       lambda do
-        @service.auth_meta @user, {}
+        @service.auth_meta @user, {}, {}
       end.should change(ServiceMetaWithUser, :count).by(0)
       @service.meta(@user)[:pass].should == "foo"
     end

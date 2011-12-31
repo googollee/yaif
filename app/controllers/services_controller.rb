@@ -26,6 +26,6 @@ class ServicesController < ApplicationController
 
   def auth_callback
     @service = Service.find(params[:id])
-    @service.auth_meta(current_user, session)
+    @service.auth_meta(current_user, session, params)
   end
 end

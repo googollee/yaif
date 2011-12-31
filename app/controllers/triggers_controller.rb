@@ -14,7 +14,7 @@ class TriggersController < ApplicationController
         render 'triggers/service_auth'
         return
       end
-      @service.auth_meta current_user, session
+      @service.auth_meta current_user, session, params
     end
 
     @triggers = @service.triggers

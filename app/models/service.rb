@@ -14,8 +14,8 @@ class Service < ActiveRecord::Base
     AuthHelper.send("#{auth_type}_auth", self, session, callback_url)
   end
 
-  def auth_meta(user, session)
-    data = AuthHelper.send("#{auth_type}_get_meta", self, session)
+  def auth_meta(user, session, params)
+    data = AuthHelper.send("#{auth_type}_get_meta", self, session, params)
     metas = ServiceMetaWithUser.where :service_id => self, :user_id => user
     return ServiceMetaWithUser.create!(:service => self, :user => user, :data => data) if metas.length == 0
     metas[0].update_attributes! :data => data

@@ -22,12 +22,7 @@ module RequestHelper
     consumer = OAuth::Consumer.new(
       meta[:key],
       meta[:secret],
-      {
-        :site => meta[:site],
-        :scheme => meta[:scheme],
-        :signature_method => meta[:signature_method],
-        :realm => root_url
-      },
+      meta[:consumer_params]
     )
     access_token = OAuth::AccessToken.new consumer, meta[:access_token], meta[:access_secret]
     get_body case method
