@@ -42,6 +42,7 @@ TODO
 ----
 
 1. More service... (mail/weibo/instagram/...)
-2. Make normal http login request. (It ought to save user's password directly. Is it OK?)
-3. Is it nessessary to connect one trigger and many actions in one task?
-4. Make some css. (I'm lazy…)
+2. Custom error handler. Some action error should be ignore. (for example: fobidden word in weibo)
+3. Multiply user meta for one service.
+4. Make normal http login request. (It ought to save user's password directly. Is it OK?)
+5. Make some css. (I'm lazy…)
