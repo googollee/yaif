@@ -24,22 +24,20 @@ class Task < ActiveRecord::Base
   def filter_items(items)
     items_ordered = items.sort { |a, b| a[:published] <=> b[:published] }
     items_ordered.each do |i|
-      if item_published_after_last_run(i)
-        yield i
-        self.last_run = i[:published]
-      end
+      yield i if item_published_after_last_run(i)
     end
   end
 
   def send_to_action(item)
     action.send_request user, get_params(item)
     self.run_count += 1
+    self.last_run = item[:published]
   end
 
   def run
     self.error_log = {}
     items = get_from_trigger
-    filter_items(items) { |i| send_to_action i } unless error_log.include? :message
+    filter_items(items) { |i| send_to_action i }
   rescue Exception => e
     self.error_log = { :message => e.message, :backtrace => e.backtrace }
   ensure
