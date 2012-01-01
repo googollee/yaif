@@ -14,7 +14,29 @@ service:
       authorize_path: /oauth/authorize
       signature_method: HMAC-SHA1
       scheme: header
-  helper:
+  helper: >
+    def get_org_uri_tweet(text)
+      text.scan(%r{https?://t.co/.*? }).each do |uri|
+        uri = uri[0..-2]
+        text.gsub! uri, follow_redirect_uri(uri)
+      end
+      text
+    end
+
+    def follow_redirect_uri(uri, limit = 5)
+      while limit > 0
+        u = URI(uri)
+        http = Net::HTTP.new u.host, u.port
+        http.use_ssl = true if u.scheme == 'https'
+        res = http.get u.path
+        if res.code[0] != '3'
+          uri = u.to_s
+          break
+        end
+        uri = res['location']
+      end
+      uri
+    end
 
 trigger:
 - name: tweets
@@ -28,7 +50,7 @@ trigger:
   content_to_hash: >
     parse_json content do |item|
       {
-        :text => item["text"],
+        :text => get_org_uri_tweet(item["text"]),
         :in_reply_to_user => item["in_reply_to_screen_name"],
         :source => item["source"].gsub(/<.*?>/, ''),
         :published => Time.parse(item["created_at"])
@@ -54,7 +76,9 @@ trigger:
       }
     end
 
-    ret.select { |i| i[:text].match tags_pattern }
+    ret = ret.select { |i| i[:text].match tags_pattern }
+
+    ret.map { |i| i.merge! :text => get_org_uri_tweet(i[:text]) }
 
 action:
 - name: tweet
