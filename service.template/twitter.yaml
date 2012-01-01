@@ -15,27 +15,19 @@ service:
       signature_method: HMAC-SHA1
       scheme: header
   helper: >
-    def get_org_uri_tweet(text)
-      text.scan(%r{https?://t.co/.*? }).each do |uri|
-        uri = uri[0..-2]
-        text.gsub! uri, follow_redirect_uri(uri)
-      end
-      text
+    def sort_urls(urls)
+      urls.sort_by { |i| -i['indices'][0] }
     end
 
-    def follow_redirect_uri(uri, limit = 5)
-      while limit > 0
-        u = URI(uri)
-        http = Net::HTTP.new u.host, u.port
-        http.use_ssl = true if u.scheme == 'https'
-        res = http.get u.path
-        if res.code[0] != '3'
-          uri = u.to_s
-          break
-        end
-        uri = res['location']
+    def get_org_uri_tweet(tweet)
+      urls = sort_urls tweet['entities']['urls']
+      text = tweet['text']
+      urls.each do |url|
+        start = url['indices'][0]
+        stop = url['indices'][1] - 1
+        text[start..stop] = url['expanded_url']
       end
-      uri
+      text
     end
 
 trigger:
@@ -45,12 +37,12 @@ trigger:
   http_method: get
   period: "*/10 * * * *"
   in_keys: []
-  source: /statuses/user_timeline.json
+  source: https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=true
   out_keys: [text, in_reply_to_user, source]
   content_to_hash: >
     parse_json content do |item|
       {
-        :text => get_org_uri_tweet(item["text"]),
+        :text => get_org_uri_tweet(item),
         :in_reply_to_user => item["in_reply_to_screen_name"],
         :source => item["source"].gsub(/<.*?>/, ''),
         :published => Time.parse(item["created_at"])
@@ -63,22 +55,20 @@ trigger:
   http_method: get
   period: "*/10 * * * *"
   in_keys: [tags]
-  source: /statuses/user_timeline.json
+  source: https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=true
   out_keys: [text, source]
   content_to_hash: >
     tags_pattern = Regexp.new "\#(#{tags.split(/[ ,]+/).join('|')}) "
 
     ret = parse_json content do |item|
       {
-        :text => item["text"],
+        :text => get_org_uri_tweet(item),
         :source => item["source"].gsub(/<.*?>/, ''),
         :published => Time.parse(item["created_at"])
       }
     end
 
-    ret = ret.select { |i| i[:text].match tags_pattern }
-
-    ret.map { |i| i.merge! :text => get_org_uri_tweet(i[:text]) }
+    ret.select { |i| i[:text].match tags_pattern }
 
 action:
 - name: tweet
