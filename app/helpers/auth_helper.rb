@@ -80,6 +80,6 @@ module AuthHelper
   end
 
   def oauth1a_get_meta(service, session, params)
-    oauth1_get_meta service, session # same as auth 1.0
+    oauth1_get_meta service, session, params # same as auth 1.0
   end
 end

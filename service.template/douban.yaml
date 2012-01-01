@@ -80,12 +80,3 @@ action:
     Content-Type: application/atom+xml
   body: >
     post_douban :content => content.strip
-
-- name: 删除我说
-  description: 删除一条我说信息
-  http_type: oauth
-  http_method: delete
-  in_keys: [id]
-  target: /miniblog/#{id}
-  body: >
-    nil
