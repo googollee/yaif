@@ -24,7 +24,8 @@ service:
       text = tweet['text']
       urls.each do |url|
         start = url['indices'][0]
-        stop = url['indices'][1] - 1
+        stop = url['indices'][1]
+        stop -= 1 if text[stop] == ' '
         text[start..stop] = url['expanded_url']
       end
       text
