@@ -19,28 +19,30 @@ class Task < ActiveRecord::Base
 
   def get_from_trigger
     trigger.get user, trigger_params
-  rescue Exception => e
-    self.error_log = { :message => "#{e.message} when get content from trigger", :backtrace => e.backtrace }
   end
 
   def filter_items(items)
     items_ordered = items.sort { |a, b| a[:published] <=> b[:published] }
     items_ordered.each do |i|
-      yield i if item_published_after_last_run(i)
+      if item_published_after_last_run(i)
+        yield i
+        self.last_run = i[:published]
+      end
     end
   end
 
   def send_to_action(item)
     action.send_request user, get_params(item)
     self.run_count += 1
-  rescue Exception => e
-    self.error_log = { :message => "#{e.message} when send to action", :backtrace => e.backtrace }
   end
 
   def run
     self.error_log = {}
     items = get_from_trigger
     filter_items(items) { |i| send_to_action i } unless error_log.include? :message
+  rescue Exception => e
+    self.error_log = { :message => e.message, :backtrace => e.backtrace }
+  ensure
     save
   end
 
@@ -49,7 +51,7 @@ class Task < ActiveRecord::Base
   def item_published_after_last_run(item)
     self.last_run ||= Time.now
     item[:published] ||= Time.now
-    return self.last_run = item[:published] if item[:published] > last_run
+    return item[:published] if item[:published] > last_run
     nil
   end
 
