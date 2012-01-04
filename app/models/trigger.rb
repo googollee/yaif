@@ -35,12 +35,13 @@ class Trigger < ActiveRecord::Base
   def init_env(user, params)
     @runtime = service.inner_runtime params || {}
     @user = user
+    @runtime.add_params meta
   end
 
   def meta
-    ret = service.meta(@user)
-    raise "Need register service(#{service.name}) first" unless ret
-    ret.merge! :header => header
+    @meta ||= service.meta(@user)
+    raise "Need register service(#{service.name}) first" unless @meta
+    @meta.merge! :header => header
   end
 
   def uri

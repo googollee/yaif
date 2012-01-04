@@ -10,6 +10,7 @@ end
 describe Trigger do
   before :each do
     @service = Factory(:service)
+    @meta = Factory(:service_meta_with_user, :service => @service)
     @attr = { :name => "test trigger",
               :description => "a test trigger",
               :http_type => "direct",
@@ -112,6 +113,12 @@ describe Trigger do
     it "should support symbol in get params" do
       ret = @trigger.get_body @user, :user_id => 123
       $uri.should == 'http://test/trigger/123'
+    end
+
+    it "should support symbol in meta data" do
+      @trigger.source = 'http://test/trigger/#{pass}'
+      ret = @trigger.get_body @user, :user_id => 123
+      $uri.should == 'http://test/trigger/xyz'
     end
 
     it "should get right atom content" do
