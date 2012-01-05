@@ -1,5 +1,10 @@
 class ServicesController < ApplicationController
+  http_basic_authenticate_with :name => Rails.configuration.basic_auth_username,
+                               :password => Rails.configuration.basic_auth_password,
+                               :only => [:show_callback]
+
   respond_to :html, :js
+  respond_to :text, :only => [:show_callback]
 
   def index
   end
@@ -12,6 +17,10 @@ class ServicesController < ApplicationController
   def services_with_action
     @services = Service.where "id IN (SELECT service_id FROM actions)"
     respond_with @services
+  end
+
+  def show_callback
+    @services = Service.all
   end
 
   def auth

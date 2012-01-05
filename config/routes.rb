@@ -17,6 +17,7 @@ Yaif::Application.routes.draw do
 
   match '/services_with_trigger', :to => 'services#services_with_trigger'
   match '/services_with_action', :to => 'services#services_with_action'
+  match '/services_show_callback', :to =>'services#show_callback', :format => :text
 
   match '/crontab', :to => 'triggers#show_crontab', :format => :text
   match '/trigger', :to => 'triggers#trigger', :format => :text
