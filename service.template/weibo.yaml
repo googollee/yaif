@@ -37,4 +37,17 @@ action:
   in_keys: [status]
   target: /statuses/update.json
   body: >
-    { :status => status.strip }
+    { :status => urlencode(status.strip) }
+
+- name: 发布图片
+  description: 发布一条带图片的微博
+  http_type: oauth
+  http_method: post
+  in_keys: [status, media_url]
+  target: /statuses/upload.json
+  body: >
+    media = open(media_url)
+
+    media.binmode
+
+    { :status => urlencode(status.strip), :pic => media.read }

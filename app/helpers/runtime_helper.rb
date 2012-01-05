@@ -1,5 +1,6 @@
 require 'time'
 require 'nokogiri'
+require 'open-uri'
 
 module RuntimeHelper
   extend self
@@ -18,6 +19,10 @@ module RuntimeHelper
       return self.send(m, *args, &block) if self.respond_to? m
       return @params[m] if @params and @params.include? m
       super
+    end
+
+    def urlencode(str)
+      CGI::escape str
     end
 
     def xml(xml_str)

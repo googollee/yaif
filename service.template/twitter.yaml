@@ -79,4 +79,4 @@ action:
   in_keys: [status]
   target: /statuses/update.json
   body: >
-    { :status => status.strip }
+    { :status => urlencode(status.strip) }

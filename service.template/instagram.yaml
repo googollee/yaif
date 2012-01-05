@@ -19,7 +19,7 @@ trigger:
   period: "0 */1 * * *"
   in_keys: [userid]
   source: /v1/users/#{userid}/media/recent?access_token=#{meta[:token]}
-  out_keys: [title, level, tags, comment, link]
+  out_keys: [caption, link, thumbnail, media]
   content_to_hash: >
     data = json(content)
 

@@ -16,6 +16,12 @@ describe RuntimeHelper do
       rt.c.should == "3"
     end
 
+    it "should have urlencode method" do
+      rt = InnerRuntime.new
+      str = "fdaf' erw"
+      rt.urlencode(str).should == CGI::escape(str)
+    end
+
     it "should have json method to parse json" do
       rt = InnerRuntime.new
       a = { "a" => "1", "b" => 2}
