@@ -35,7 +35,7 @@ class Trigger < ActiveRecord::Base
   def init_env(user, params)
     @runtime = service.inner_runtime params || {}
     @user = user
-    @runtime.add_params meta
+    @runtime.add_params :meta => meta
   end
 
   def meta

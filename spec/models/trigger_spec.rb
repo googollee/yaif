@@ -116,7 +116,7 @@ describe Trigger do
     end
 
     it "should support symbol in meta data" do
-      @trigger.source = 'http://test/trigger/#{pass}'
+      @trigger.source = 'http://test/trigger/#{meta[:pass]}'
       ret = @trigger.get_body @user, :user_id => 123
       $uri.should == 'http://test/trigger/xyz'
     end

@@ -84,7 +84,7 @@ describe Action do
 
     it "should parse symbol in meta data" do
       params = { :updated => Time.now, :id => "123", :content => "abc" }
-      @action.target = 'http://test/action/#{pass}'
+      @action.target = 'http://test/action/#{meta[:pass]}'
       @action.send_request @user, params
       $uri.should == "http://test/action/xyz"
     end
