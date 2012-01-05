@@ -1,4 +1,5 @@
 require 'oauth'
+require 'oauth2'
 
 module AuthHelper
   extend self
@@ -81,5 +82,30 @@ module AuthHelper
 
   def oauth1a_get_meta(service, session, params)
     oauth1_get_meta service, session, params # same as auth 1.0
+  end
+
+  def oauth2_auth(service, session, callback_url)
+    client_params = service.auth_data[:client_params].symbolize_keys
+    client = OAuth2::Client.new(
+      service.auth_data[:key],
+      service.auth_data[:secret],
+      client_params
+    )
+
+    session[:oauth2_client] = client
+    session[:oauth2_callback] = callback_url
+    client.auth_code.authorize_url :redirect_uri => callback_url
+  end
+
+  def oauth2_get_meta(service, session, params)
+    client = session[:oauth2_client]
+    token = client.auth_code.get_token(params[:code], :redirect_uri => session[:oauth2_callback])
+    {
+      :key => client.id,
+      :secret => client.secret,
+      :client_params => client.options.merge(:site => client.site),
+      :token => token.token,
+      :token_params => token.params
+    }
   end
 end
