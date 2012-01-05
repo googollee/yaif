@@ -1,0 +1,34 @@
+service:
+  name: instagram
+  icon: http://distillery.s3.amazonaws.com/static/home/images/instagramTitle.png
+  description: instagram, post and share the photo
+  auth_type: oauth2
+  auth_data:
+    key: input your key here
+    secret: input your secret here
+    client_params:
+      site: https://api.instagram.com
+      token_url: /oauth/access_token
+  helper:
+
+trigger:
+- name: Recent media
+  description: Get the most recent media published by a user.
+  http_type: oauth2
+  http_method: get
+  period: "0 */1 * * *"
+  in_keys: [userid]
+  source: /v1/users/#{userid}/media/recent?access_token=#{meta[:token]}
+  out_keys: [title, level, tags, comment, link]
+  content_to_hash: >
+    data = json(content)
+
+    data["data"].map do |i|
+      {
+        :caption => i["caption"]["text"],
+        :link => i["link"],
+        :thumbnail => i["images"]["thumbnail"]["url"],
+        :media => i["images"]["standard_resolution"]["url"],
+        :published => Time.at(i["created_time"].to_i),
+      }
+    end
