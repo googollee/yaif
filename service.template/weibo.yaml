@@ -37,7 +37,7 @@ action:
   in_keys: [status]
   target: /statuses/update.json
   body: >
-    { :status => urlencode(status.strip) }
+    { :status => status.strip }
 
 - name: 发布图片
   description: 发布一条带图片的微博
@@ -50,4 +50,4 @@ action:
 
     media.binmode
 
-    { :status => urlencode(status.strip), :pic => media.read }
+    { :status => status.strip, :pic => media.read }
