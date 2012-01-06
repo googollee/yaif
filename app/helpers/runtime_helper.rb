@@ -54,10 +54,6 @@ module RuntimeHelper
     rescue
       ''
     end
-
-    def xml_unescape(str)
-      CGI::unescape(str)
-    end
   end
 
   def init_env(obj)
