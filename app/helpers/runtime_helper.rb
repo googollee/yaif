@@ -25,6 +25,10 @@ module RuntimeHelper
       CGI::escape str
     end
 
+    def xmlunescape(str)
+      CGI::unescape_html str
+    end
+
     def xml(xml_str)
       Nokogiri::XML(xml_str)
     end

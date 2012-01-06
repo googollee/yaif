@@ -22,6 +22,12 @@ describe RuntimeHelper do
       rt.urlencode(str).should == CGI::escape(str)
     end
 
+    it "should have htmlunescape method" do
+      rt = InnerRuntime.new
+      str = "L&#xE4;tt B bed. Tv&#xE5; omg&#xE5;ngar A:0 och A:0"
+      rt.xmlunescape(str).should == CGI::unescape_html(str)
+    end
+
     it "should have json method to parse json" do
       rt = InnerRuntime.new
       a = { "a" => "1", "b" => 2}
