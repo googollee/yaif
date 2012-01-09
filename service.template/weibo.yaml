@@ -5,7 +5,7 @@ service:
   auth_type: oauth1
   auth_data:
     key: input your key here
-    secret: input your secret here
+    secret: input your key here
     consumer_params:
       site: http://api.t.sina.com.cn
   helper:
@@ -45,9 +45,9 @@ action:
   http_method: post
   in_keys: [status, media_url]
   target: /statuses/upload.json
+  header:
+    Content-Type: multipart/form-data, boundary=-----------RubyMultipartPost
   body: >
-    media = open(media_url)
+    media = open(media_url, 'rb')
 
-    media.binmode
-
-    { :status => status.strip, :pic => media.read }
+    multipart :status => status.strip, :pic => UploadIO.new(media, 'image/jpeg', File.basename(media_url))
