@@ -77,10 +77,11 @@ EOF
       rt.grab_text(str, /<123>tag: (.*?)</m).should == ""
     end
 
-    it "should unescape xml string" do
+    it "should generate multipart post body" do
       rt = InnerRuntime.new
-      str = CGI::escape("<abc>")
-      rt.xml_unescape(str).should == "<abc>"
+      params = { :status => "abc", :pic => '123' }
+      post = rt.multipart params
+      post.should == Net::HTTP::Post::Multipart.new('/', params).body_stream.read
     end
   end
 end

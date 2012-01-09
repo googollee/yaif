@@ -21,6 +21,7 @@ gem 'will_paginate'
 gem 'oauth'
 gem 'oauth2'
 gem 'nokogiri'
+gem 'multipart-post'
 
 # Use unicorn as the web server
 # gem 'unicorn'

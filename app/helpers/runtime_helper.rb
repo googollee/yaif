@@ -1,6 +1,7 @@
 require 'time'
 require 'nokogiri'
 require 'open-uri'
+require 'net/http/post/multipart'
 
 module RuntimeHelper
   extend self
@@ -19,6 +20,11 @@ module RuntimeHelper
       return self.send(m, *args, &block) if self.respond_to? m
       return @params[m] if @params and @params.include? m
       super
+    end
+
+    def multipart(params)
+      multipart = Net::HTTP::Post::Multipart.new '/', params
+      multipart.body_stream.read
     end
 
     def urlencode(str)

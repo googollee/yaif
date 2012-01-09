@@ -159,6 +159,7 @@ DEPENDENCIES
   guard-rspec
   guard-spork
   jquery-rails
+  multipart-post
   nokogiri
   oauth
   oauth2
