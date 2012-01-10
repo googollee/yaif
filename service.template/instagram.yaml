@@ -19,7 +19,7 @@ trigger:
   period: "0 */1 * * *"
   in_keys: [userid]
   source: /v1/users/#{userid}/media/recent?access_token=#{meta[:token]}
-  out_keys: [caption, link, thumbnail, media]
+  out_keys: [caption, link, thumbnail_uri, media_uri]
   content_to_hash: >
     data = json(content)
 
@@ -27,8 +27,8 @@ trigger:
       {
         :caption => i["caption"]["text"],
         :link => i["link"],
-        :thumbnail => i["images"]["thumbnail"]["url"],
-        :media => i["images"]["standard_resolution"]["url"],
+        :thumbnail_uri => i["images"]["thumbnail"]["url"],
+        :media_uri => i["images"]["standard_resolution"]["url"],
         :published => Time.at(i["created_time"].to_i),
       }
     end
