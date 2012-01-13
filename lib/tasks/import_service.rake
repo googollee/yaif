@@ -22,7 +22,7 @@ namespace :service do
         t.symbolize_keys!
         puts "\tImport Trigger: #{t[:name]}..."
         t[:service] = service
-        unless trigger = Trigger.find_by_name(t[:name])
+        unless trigger = service.triggers.find_by_name(t[:name])
           Trigger.create! t
         else
           trigger.update_attributes t
@@ -33,7 +33,7 @@ namespace :service do
         a.symbolize_keys!
         puts "\tImport Action: #{a[:name]}..."
         a[:service] = service
-        unless action = Action.find_by_name(a[:name])
+        unless action = service.actions.find_by_name(a[:name])
           Action.create! a
         else
           action.update_attributes a
