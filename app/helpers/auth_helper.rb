@@ -94,7 +94,12 @@ module AuthHelper
 
     session[:oauth2_client] = client
     session[:oauth2_callback] = callback_url
-    client.auth_code.authorize_url :redirect_uri => callback_url
+
+    if service.auth_data[:auth_params]
+      client.auth_code.authorize_url service.auth_data[:auth_params].merge(:redirect_uri => callback_url)
+    else
+      client.auth_code.authorize_url :redirect_uri => callback_url
+    end
   end
 
   def oauth2_get_meta(service, session, params)
