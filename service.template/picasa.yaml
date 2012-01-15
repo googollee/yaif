@@ -1,0 +1,57 @@
+service:
+  name: Picasa
+  icon: http://upload.wikimedia.org/wikipedia/zh/0/03/Picasa_Icon.png
+  description: Google Picasa, web photo album
+  auth_type: oauth2
+  auth_data:
+    key: input your key here
+    secret: input your secret here
+    client_params:
+      site: https://accounts.google.com
+      authorize_url: /o/oauth2/auth
+      token_url: /o/oauth2/token
+    auth_params:
+      scope: https://picasaweb.google.com/data/
+  helper: >
+    def rss_meta(filename, summary, latitude, longitude)
+      latitude = nil if latitude == ''
+      longitude = nil if longitude == ''
+
+      meta = '<entry xmlns="http://www.w3.org/2005/Atom" xmlns:georss="http://www.georss.org/georss" xmlns:gml="http://www.opengis.net/gml" xmlns:gphoto="http://schemas.google.com/photos/2007">'
+      meta += "<title>#{filename}</title>"
+      meta += "<summary>#{summary}</summary>"
+      meta += "<gphoto:timestamp>#{published.to_i}000</gphoto:timestamp>"
+      meta += '<category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#photo"/>'
+      meta += "<georss:where><gml:Point><gml:pos>#{latitude} #{longitude}</gml:pos></gml:Point></georss:where>" if latitude and longitude
+      meta += '</entry>'
+
+      meta
+    end
+
+    def multipart_body(meta, file_path)
+      body = "--END_OF_PART\n"
+      body += "Content-Type: application/atom+xml\n"
+      body += "\n"
+      body += "#{meta}\n"
+      body += "--END_OF_PART\n"
+      body += "Content-Type: image/jpeg\n"
+      body += "\n"
+
+      compose = CompositeReadIO.new(StringIO.new(body), open(file_path, 'rb'), StringIO.new("\n--END_OF_PART--\n"))
+
+      compose.read
+    end
+
+action:
+- name: 发布图片
+  description: 发布一条图片到指定相册
+  http_type: oauth2
+  http_method: post
+  in_keys: [summary, latitude, longitude, media_uri, album_id]
+  target: https://picasaweb.google.com/data/feed/api/user/default/albumid/#{album_id}
+  header:
+    Content-Type: multipart/related; boundary="END_OF_PART"
+  body: >
+    meta = rss_meta File.basename(media_uri), summary, latitude, longitude
+
+    multipart_body meta, media_uri
