@@ -30,7 +30,7 @@ module AuthHelper
     consumer_params = service.auth_data[:consumer_params].symbolize_keys
     consumer_params[:site] ||= consumer_params[:auth_site]
     consumer_params[:realm] ||= root_url
-    puts consumer_params
+
     consumer = OAuth::Consumer.new(
       service.auth_data[:key],
       service.auth_data[:secret],
@@ -42,9 +42,6 @@ module AuthHelper
   end
 
   def oauth1_get_meta(service, session, params)
-    consumer_params = service.auth_data[:consumer_params].symbolize_keys
-    consumer_params[:site] ||= consumer_params[:access_site]
-    consumer_params[:realm] ||= root_url
     access_token = session[:request_token].get_access_token :oauth_verifier => params[:oauth_verifier]
     {
       :key => service.auth_data[:key],
@@ -92,7 +89,6 @@ module AuthHelper
       client_params
     )
 
-    session[:oauth2_client] = client
     session[:oauth2_callback] = callback_url
 
     if service.auth_data[:auth_params]
@@ -103,7 +99,13 @@ module AuthHelper
   end
 
   def oauth2_get_meta(service, session, params)
-    client = session[:oauth2_client]
+    client_params = service.auth_data[:client_params].symbolize_keys
+    client = OAuth2::Client.new(
+      service.auth_data[:key],
+      service.auth_data[:secret],
+      client_params
+    )
+
     token = client.auth_code.get_token(params[:code], :redirect_uri => session[:oauth2_callback])
     {
       :key => client.id,

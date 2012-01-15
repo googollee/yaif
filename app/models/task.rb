@@ -56,6 +56,7 @@ class Task < ActiveRecord::Base
   def get_params(item)
     rt = RuntimeHelper::InnerRuntime.new
     rt.add_params item
-    action.in_keys.inject({}) { |o, k| o.merge! k => (rt.eval "\"#{action_params[k]}\"") }
+    ret = action.in_keys.inject({}) { |o, k| o.merge! k => (rt.eval "\"#{action_params[k]}\"") }
+    ret.merge :published => item[:published] || Time.now
   end
 end

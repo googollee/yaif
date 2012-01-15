@@ -39,12 +39,9 @@ module RequestHelper
     token_params = meta[:token_params].symbolize_keys
     client = OAuth2::Client.new meta[:key], meta[:secret], client_params
     token = OAuth2::AccessToken.new client, meta[:token], token_params
-    resp = case method
-      when :get, :delete, :head
-        token.send method, path, meta[:header]
-      else
-        token.send method, path, body, meta[:header]
-      end
+
+    resp = token.send method, path, :body => body, :headers => meta[:header]
+
     raise resp.body unless resp.status.to_s =~ /^2\d\d$/
     resp.body
   end
