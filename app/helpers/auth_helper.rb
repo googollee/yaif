@@ -82,7 +82,7 @@ module AuthHelper
   end
 
   def oauth2_auth(service, session, callback_url)
-    client_params = service.auth_data[:client_params].symbolize_keys
+    client_params = service.auth_data[:client_params].symbolize_keys.merge :raise_errors => false
     client = OAuth2::Client.new(
       service.auth_data[:key],
       service.auth_data[:secret],
