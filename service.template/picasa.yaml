@@ -12,6 +12,8 @@ service:
       token_url: /o/oauth2/token
     auth_params:
       scope: https://picasaweb.google.com/data/
+      access_type: offline
+      approval_prompt: force
   helper: >
     def rss_meta(filename, summary, latitude, longitude)
       latitude = nil if latitude == ''
