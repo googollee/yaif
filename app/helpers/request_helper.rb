@@ -40,6 +40,8 @@ module RequestHelper
     client = OAuth2::Client.new meta[:key], meta[:secret], client_params
     token = OAuth2::AccessToken.new client, meta[:token], token_params
 
+    token = token.refresh! if token_params[:refresh_token]
+
     resp = token.send method, path, :body => body, :headers => meta[:header]
 
     raise resp.body unless resp.status.to_s =~ /^2\d\d$/

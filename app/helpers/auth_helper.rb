@@ -107,12 +107,14 @@ module AuthHelper
     )
 
     token = client.auth_code.get_token(params[:code], :redirect_uri => session[:oauth2_callback])
+    token_params = token.params
+    token_params[:refresh_token] = token.refresh_token if token.refresh_token
     {
       :key => client.id,
       :secret => client.secret,
       :client_params => client.options.merge(:site => client.site),
       :token => token.token,
-      :token_params => token.params
+      :token_params => token_params
     }
   end
 end
