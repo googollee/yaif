@@ -36,9 +36,11 @@ module RequestHelper
 
   def oauth2_request(method, path, body, meta)
     client_params = meta[:client_params].symbolize_keys.merge :raise_errors => false
+    client_params[:token_method] = client_params[:token_method].to_sym
     token_params = meta[:token_params].symbolize_keys
+
     client = OAuth2::Client.new meta[:key], meta[:secret], client_params
-    token = OAuth2::AccessToken.new client, meta[:token], token_params
+    token = OAuth2::AccessToken.new client, meta[:token], token_params.clone
 
     token = token.refresh! if token_params[:refresh_token]
 
