@@ -41,8 +41,7 @@ Usage
 TODO
 ----
 
-1. More service...
-2. Custom error handler. Some action error should be ignore. (for example: fobidden word in weibo)
-3. Multiply user meta for one service.
-4. Make normal http login request. (It ought to save user's password directly. Is it OK?)
-5. Make some css. (I'm lazy…)
+1. Custom error handler. Some action error should be ignore. (for example: fobidden word in weibo)
+2. Multiply user meta for one service.
+3. Make normal http login request. (It ought to save user's password directly. Is it OK?)
+4. Make some css. (I'm lazy…)
