@@ -4,5 +4,5 @@ log/*.log
 tmp/
 .sass-cache/
 service/*
-
+.rvmrc
 update.sh

@@ -4,7 +4,6 @@ describe RegKey do
   before :each do
     @attr = {
       :email => "test1@domain.com",
-      :validation => 1,
     }
   end
 
@@ -59,10 +58,10 @@ describe RegKey do
     key = RegKey.new @attr
     key.save
 
-    RegKey.get_validate_by_key(@attr[:key]).should == key
+    RegKey.get_validate_by_key(key.key).should == key
 
     key.mark_used
-    RegKey.get_validate_by_key(@attr[:key]).should == nil
+    RegKey.get_validate_by_key(key.key).should == nil
   end
 
   it "should get user though email" do

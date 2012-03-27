@@ -1,7 +1,7 @@
 require 'digest/md5'
 
 class RegKey < ActiveRecord::Base
-  attr_accessible :email, :key
+  attr_accessible :email
 
   validates :key, :presence => true
   validates :email, :presence => true
@@ -23,8 +23,13 @@ class RegKey < ActiveRecord::Base
   end
 
   def initialize params
-    params[:key] = Digest::MD5.hexdigest("#{Time.now}#{params[:email]}")[0..8]
     super params
+    self.validation = 1
+    self.key = Digest::MD5.hexdigest("#{Time.now}#{params[:email]}")[0..8]
+  end
+
+  def key
+    read_attribute :key
   end
 
   def validate?
