@@ -1,17 +1,22 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
-gem 'rails', '3.2.1'
+gem 'rails', '3.2.2'
 
 # Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
+# gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+# Gems used only for assets and not required
+# in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
+
+  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+  # gem 'therubyracer'
+
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'bcrypt-ruby'
 gem 'jquery-rails'
 gem 'gravatar_image_tag'
 gem 'will_paginate'
@@ -20,7 +25,10 @@ gem 'oauth2'
 gem 'nokogiri'
 gem 'multipart-post'
 
-# Use unicorn as the web server
+# To use ActiveModel has_secure_password
+gem 'bcrypt-ruby'
+
+# Use unicorn as the app server
 # gem 'unicorn'
 
 # Deploy with Capistrano

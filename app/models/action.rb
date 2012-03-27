@@ -1,4 +1,7 @@
 class Action < ActiveRecord::Base
+  attr_accessible :name, :description, :http_type, :http_method,
+                  :in_keys, :target, :header, :body, :service
+
   validates :name, :presence => true,
                    :length => { :maximum => 200 }
   validates :http_type, :presence => true

@@ -1,4 +1,6 @@
 class Service < ActiveRecord::Base
+  attr_accessible :name, :icon, :description, :auth_type, :auth_data, :helper
+
   validates :name, :presence => true,
                    :length => { :maximum => 200 }
   validates :icon, :presence => true

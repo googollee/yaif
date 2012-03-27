@@ -1,4 +1,6 @@
 class ServiceMetaWithUser < ActiveRecord::Base
+  attr_accessible :user, :service, :data
+
   self.table_name = "service_meta_with_user"
 
   validates :user, :presence => true

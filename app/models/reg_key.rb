@@ -1,6 +1,8 @@
 require 'digest/md5'
 
 class RegKey < ActiveRecord::Base
+  attr_accessible :email, :key
+
   validates :key, :presence => true
   validates :email, :presence => true
 

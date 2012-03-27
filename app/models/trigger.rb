@@ -1,4 +1,7 @@
 class Trigger < ActiveRecord::Base
+  attr_accessible :name, :description, :http_type, :http_method,
+                  :period, :in_keys, :source, :header, :out_keys, :content_to_hash, :service
+
   validates :name, :presence => true,
                    :length => { :maximum => 200 }
   validates :http_type, :presence => true
