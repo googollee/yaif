@@ -43,6 +43,10 @@ module AuthHelper
 
   def oauth1_get_meta(service, session, params)
     access_token = session[:request_token].get_access_token :oauth_verifier => params[:oauth_verifier]
+    consumer_params = service.auth_data[:consumer_params].symbolize_keys
+    consumer_params[:site] ||= consumer_params[:access_site]
+    consumer_params[:realm] ||= root_url
+
     {
       :key => service.auth_data[:key],
       :secret => service.auth_data[:secret],
