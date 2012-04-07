@@ -11,7 +11,7 @@ module RequestHelper
 
   def direct_request(method, uri, body, meta={})
     uri = get_uri uri
-    req = get_method(method).new uri.path
+    req = get_method(method).new uri.request_uri
     req.set_body_internal body
     res = Net::HTTP.start uri.host, uri.port, :use_ssl => (uri.scheme == "https") do |http|
       http.request req
