@@ -9,8 +9,8 @@ end
 
 describe Trigger do
   before :each do
-    @service = Factory(:service)
-    @meta = Factory(:service_meta_with_user, :service => @service)
+    @service = FactoryGirl.create(:service)
+    @meta = FactoryGirl.create(:service_meta_with_user, :service => @service)
     @attr = { :name => "test trigger",
               :description => "a test trigger",
               :http_type => "direct",
@@ -77,8 +77,8 @@ describe Trigger do
     end
 
     it "should have right task" do
-      task1 = Factory(:task, :trigger => @trigger)
-      task2 = Factory(:task, :trigger => @trigger)
+      task1 = FactoryGirl.create(:task, :trigger => @trigger)
+      task2 = FactoryGirl.create(:task, :trigger => @trigger)
       @trigger.tasks.should == [task1, task2]
     end
   end
@@ -99,9 +99,9 @@ describe Trigger do
       end
 
       @trigger = Trigger.new(@attr)
-      @meta = Factory(:service_meta_with_user,
-                      :service => @trigger.service,
-                      :data => { :pass => "xyz" })
+      @meta = FactoryGirl.create(:service_meta_with_user,
+                                 :service => @trigger.service,
+                                 :data => { :pass => "xyz" })
       @user = @meta.user
     end
 
@@ -138,11 +138,11 @@ describe Trigger do
     end
 
     it "should call service when not find method" do
-      service = Factory(:service, :helper => "
+      service = FactoryGirl.create(:service, :helper => "
                           def test_helper(a)
                             a.to_s
                           end")
-      meta = Factory(:service_meta_with_user,
+      meta = FactoryGirl.create(:service_meta_with_user,
                      :service => service,
                      :user => @user,
                      :data => {})
@@ -153,7 +153,7 @@ describe Trigger do
     end
 
     it "should raise error when no meta" do
-      service = Factory(:service)
+      service = FactoryGirl.create(:service)
       @attr[:service] = service
       @trigger = Trigger.new(@attr)
       lambda do

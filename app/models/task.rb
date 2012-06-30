@@ -1,5 +1,5 @@
 class Task < ActiveRecord::Base
-  attr_accessible :name, :user, :trigger_id, :trigger_params, :action_id, :action_params
+  attr_accessible :name, :user, :trigger, :trigger_params, :action, :action_params
 
   validates :name, :presence => true
   validates :user, :presence => true

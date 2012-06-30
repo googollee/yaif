@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe ServiceMetaWithUser do
   before :each do
-    @user = Factory(:user)
-    @service = Factory(:service)
+    @user = FactoryGirl.create(:user)
+    @service = FactoryGirl.create(:service)
     @attr = { :user => @user,
               :service => @service,
               :data => {} }

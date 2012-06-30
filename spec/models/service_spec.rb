@@ -49,14 +49,14 @@ describe Service do
     end
 
     it "should have right triggers" do
-      trigger1 = Factory(:trigger, :service => @service)
-      trigger2 = Factory(:trigger, :service => @service)
+      trigger1 = FactoryGirl.create(:trigger, :service => @service)
+      trigger2 = FactoryGirl.create(:trigger, :service => @service)
       @service.triggers.should == [trigger1, trigger2]
     end
 
     it "should have right actions" do
-      action1 = Factory(:action, :service => @service)
-      action2 = Factory(:action, :service => @service)
+      action1 = FactoryGirl.create(:action, :service => @service)
+      action2 = FactoryGirl.create(:action, :service => @service)
       @service.actions.should == [action1, action2]
     end
 
@@ -71,7 +71,7 @@ describe Service do
   describe "workflow" do
     before :each do
       @service = Service.new(@attr)
-      @user = Factory(:user)
+      @user = FactoryGirl.create(:user)
 
       $auth_url = 'http://test/auth/url'
       module AuthHelper

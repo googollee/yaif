@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Action do
   before :each do
-    @service = Factory(:service)
+    @service = FactoryGirl.create(:service)
     @attr = { :name => "test action",
               :description => "a test action",
               :http_type => "direct",
@@ -58,8 +58,8 @@ describe Action do
     end
 
     it "should have right task" do
-      task1 = Factory(:task, :action => @action)
-      task2 = Factory(:task, :action => @action)
+      task1 = FactoryGirl.create(:task, :action => @action)
+      task2 = FactoryGirl.create(:task, :action => @action)
       @action.tasks.should == [task1, task2]
     end
   end
@@ -78,7 +78,7 @@ describe Action do
       end
 
       @action = Action.new(@attr)
-      @meta = Factory(:service_meta_with_user, :service => @action.service, :data => {:pass => "xyz"})
+      @meta = FactoryGirl.create(:service_meta_with_user, :service => @action.service, :data => {:pass => "xyz"})
       @user = @meta.user
     end
 
@@ -100,11 +100,11 @@ describe Action do
     end
 
     it "should call service when not find method" do
-      service = Factory(:service, :helper => "
+      service = FactoryGirl.create(:service, :helper => "
                           def test_helper(a)
                             a.to_s
                           end")
-      meta = Factory(:service_meta_with_user,
+      meta = FactoryGirl.create(:service_meta_with_user,
                      :service => service,
                      :user => @user,
                      :data => {})
@@ -116,7 +116,7 @@ describe Action do
     end
 
     it "should raise error when no meta" do
-      service = Factory(:service)
+      service = FactoryGirl.create(:service)
       @attr[:service] = service
       @action = Action.new(@attr)
       lambda do

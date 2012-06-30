@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Task do
   before :each do
-    @user = Factory(:user)
-    @trigger = Factory(:trigger)
-    @action = Factory(:action)
+    @user = FactoryGirl.create(:user)
+    @trigger = FactoryGirl.create(:trigger)
+    @action = FactoryGirl.create(:action)
     @attr = {
       :name => "test task",
       :user => @user,
@@ -71,8 +71,8 @@ describe Task do
 
   describe "work flow" do
     before :each do
-      @trigger_meta = Factory(:service_meta_with_user, :user => @user, :service => @trigger.service, :data => { :from => "trigger" })
-      @action_meta = Factory(:service_meta_with_user, :user => @user, :service => @action.service, :data => { :from => "action" })
+      @trigger_meta = FactoryGirl.create(:service_meta_with_user, :user => @user, :service => @trigger.service, :data => { :from => "trigger" })
+      @action_meta = FactoryGirl.create(:service_meta_with_user, :user => @user, :service => @action.service, :data => { :from => "action" })
       $content = [
         {:title => "1", :published => 2.day.ago},
         {:title => "2", :published => 1.minute.ago}
@@ -191,10 +191,10 @@ EOF
 
   describe "whole work flow" do
     before :each do
-      @trigger = Factory(:trigger, :content_to_hash => "[{:title => 'Just test!', :published => Time.now}]")
-      @trigger_meta = Factory(:service_meta_with_user, :user => @user, :service => @trigger.service, :data => { :from => "trigger" })
-      @action = Factory(:action, :in_keys => [:content], :body => '"#{content}"')
-      @action_meta = Factory(:service_meta_with_user, :user => @user, :service => @action.service, :data => { :from => "action" })
+      @trigger = FactoryGirl.create(:trigger, :content_to_hash => "[{:title => 'Just test!', :published => Time.now}]")
+      @trigger_meta = FactoryGirl.create(:service_meta_with_user, :user => @user, :service => @trigger.service, :data => { :from => "trigger" })
+      @action = FactoryGirl.create(:action, :in_keys => [:content], :body => '"#{content}"')
+      @action_meta = FactoryGirl.create(:service_meta_with_user, :user => @user, :service => @action.service, :data => { :from => "action" })
 
       @attr[:trigger] = @trigger
       @attr[:action] = @action

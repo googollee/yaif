@@ -24,14 +24,14 @@ FactoryGirl.define do
   end
 
   factory :user do
-    name { Factory.next :user_name }
-    email { Factory.next :user_email }
+    name { generate :user_name }
+    email { generate :user_email }
     password "foobar"
     password_confirmation "foobar"
   end
 
   factory :service do
-    name { Factory.next :service_name }
+    name { generate :service_name }
     icon "file://./test.png"
     description "a test service"
     auth_type "none_auth"
@@ -40,7 +40,7 @@ FactoryGirl.define do
   end
 
   factory :trigger do
-    name { Factory.next :trigger_name }
+    name { generate :trigger_name }
     description "a test trigger"
     http_type "direct"
     http_method "get"
@@ -58,7 +58,7 @@ EOF
   end
 
   factory :action do
-    name { Factory.next :action_name }
+    name { generate :action_name }
     description "a test action"
     http_type "direct"
     http_method "post"
@@ -70,7 +70,7 @@ EOF
   end
 
   factory :task do
-    name { Factory.next :task_name }
+    name { generate :task_name }
     association :user
     association :trigger
     trigger_params {}

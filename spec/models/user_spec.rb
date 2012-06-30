@@ -56,8 +56,8 @@ describe User do
     end
 
     it "should have right tasks" do
-      task1 = Factory(:task, :user => @user)
-      task2 = Factory(:task, :user => @user)
+      task1 = FactoryGirl.create(:task, :user => @user)
+      task2 = FactoryGirl.create(:task, :user => @user)
       @user.tasks.should == [task1, task2]
     end
   end
