@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(:version => 20111124143443) do
     t.text     "header"
     t.text     "body"
     t.integer  "service_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   add_index "actions", ["service_id"], :name => "index_actions_on_service_id"
@@ -33,16 +33,16 @@ ActiveRecord::Schema.define(:version => 20111124143443) do
     t.string   "key"
     t.string   "email"
     t.integer  "validation", :default => 1
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "service_meta_with_user", :force => true do |t|
     t.integer  "service_id"
     t.integer  "user_id"
     t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "service_meta_with_user", ["service_id", "user_id"], :name => "index_service_meta_with_user_on_service_id_and_user_id", :unique => true
@@ -56,8 +56,8 @@ ActiveRecord::Schema.define(:version => 20111124143443) do
     t.string   "auth_type"
     t.text     "auth_data"
     t.text     "helper"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "tasks", :force => true do |t|
@@ -70,8 +70,8 @@ ActiveRecord::Schema.define(:version => 20111124143443) do
     t.integer  "run_count",      :default => 0
     t.datetime "last_run"
     t.text     "error_log"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   add_index "tasks", ["action_id"], :name => "index_tasks_on_action_id"
@@ -90,8 +90,8 @@ ActiveRecord::Schema.define(:version => 20111124143443) do
     t.text     "out_keys"
     t.text     "content_to_hash"
     t.integer  "service_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   add_index "triggers", ["service_id"], :name => "index_triggers_on_service_id"
@@ -100,8 +100,8 @@ ActiveRecord::Schema.define(:version => 20111124143443) do
     t.string   "name"
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
 end
