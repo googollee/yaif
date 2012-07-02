@@ -22,7 +22,7 @@ class Trigger < ActiveRecord::Base
   def get_body(user, params)
     init_env user, params
     content = RequestHelper.send("#{http_type}_request".to_sym, http_method.to_sym, uri, nil, meta)
-    @runtime.add_params :content => content
+    @runtime.add_params content: content
     content
   end
 
@@ -38,13 +38,14 @@ class Trigger < ActiveRecord::Base
   def init_env(user, params)
     @runtime = service.inner_runtime params || {}
     @user = user
-    @runtime.add_params :meta => meta
+    @runtime.add_params auth_data: service.auth_data
+    @runtime.add_params meta: meta
   end
 
   def meta
     @meta ||= service.meta(@user)
     raise "Need register service(#{service.name}) first" unless @meta
-    @meta.merge! :header => header
+    @meta.merge! header: header
   end
 
   def uri
