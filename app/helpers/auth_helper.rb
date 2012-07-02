@@ -110,6 +110,7 @@ module AuthHelper
       client_params
     )
 
+    OAuth2::Response::CONTENT_TYPES["text/plain"] = :json
     token = client.auth_code.get_token(params[:code], :redirect_uri => session[:oauth2_callback])
     token_params = token.params
     token_params[:refresh_token] = token.refresh_token if token.refresh_token
